@@ -1,5 +1,12 @@
 # Changelog
 
+## [0.3.1](https://github.com/datisthq/testdocs/compare/v0.3.0...v0.3.1) (2026-10-06)
+
+
+### Bug Fixes
+
+* **ci:** look up the release PR instead of reading the action output ([1378d28](https://github.com/datisthq/testdocs/commit/1378d28589181987da670c66d4679979c83e98b9))
+
 ## [0.3.0](https://github.com/datisthq/testdocs/compare/v0.2.0...v0.3.0) (2026-08-29)
 
 ### Features
