@@ -2,6 +2,8 @@
 
 This file provides guidance to coding agents when working with code in this repository.
 
+Irondocs runs markdown code blocks as tests. Two packages share one contract: TypeScript (a vite plugin and a jest transformer) in `typescript/`, Python (a pytest plugin) in `python/`. The root is a private pnpm workspace holding the shared tooling, release config and the docs site, built with Livemark; it chains each section with `pnpm -C <section>`, never `pnpm -r`.
+
 ## General
 
 - **Never commit unless asked to**
@@ -21,18 +23,20 @@ Depth lives in `.agents/skills/` (reached by Claude Code through the `.claude/sk
 this file carries invariants and the skills carry procedure. Reach for one before working in
 its area. Each is named `<subject>-<facet>`, subject first (`change-review`):
 
-| skill           | when                                                          |
-| --------------- | ------------------------------------------------------------- |
-| `change-review` | reviewing a pull request — also what the review workflow runs |
+| skill                | when                                                          |
+| -------------------- | ------------------------------------------------------------- |
+| `change-review`      | reviewing a pull request — also what the review workflow runs |
+| `python-development` | working in `python/` — layout, uv commands, typing, twins     |
 
 ## Commands
 
-- Run `pnpm install` to install all dependencies
-- Run `pnpm lint` to lint the code using Biome
-- Run `pnpm format` to auto-fix formatting issues with Biome
-- Run `pnpm type` to check TypeScript types
-- Run `pnpm unit` to run only the Vitest tests
-- Run `pnpm exec vitest run path/to/test.ts` to run a single test
+- Run `pnpm install` to install all dependencies (and `uv sync` in `python/` when uv is present)
+- Run `pnpm lint` to lint the code (`vp fmt --check && vp lint`, then ruff)
+- Run `pnpm format` to auto-fix formatting issues (`vp fmt`, then `ruff format`)
+- Run `pnpm type` to check types (`tsgo --noEmit`, then `ty check`)
+- Run `pnpm unit` to run the Vitest tests, then pytest
+- Run `pnpm -C typescript <script>` or `pnpm -C python <script>` for one section
+- Run `pnpm exec vitest run path/to/test.ts` from `typescript/`, or `uv run pytest path/to/module_unit.py` from `python/`, to run a single test
 
 ## Formats
 
@@ -48,7 +52,8 @@ its area. Each is named `<subject>-<facet>`, subject first (`change-review`):
 
 ## Specs
 
-- Place unit tests in `<module>.unit.ts` files and don't add useless comments like "Arrange", "Act", "Assert"
+- Place unit tests in `<module>.unit.ts` (TypeScript) or `<module>_unit.py` (Python) files and don't add useless comments like "Arrange", "Act", "Assert"
+- **A behaviour change lands in both packages in the same branch**, with the same names (case-converted), defaults and semantics. A twin left out on purpose is named in the commit body with why
 
 ## Releases
 
@@ -56,16 +61,22 @@ Conventional Commits drive [release-please](https://github.com/googleapis/releas
 `feat` or `fix` landing on `main` opens a Release PR, and merging that PR cuts the version,
 tags it and publishes. Merging is the gate — nothing ships without it.
 
-- **IMPORTANT: only changes to the published package use `feat` or `fix`.** Everything else MUST be
-  `chore` or `docs` — CI and workflows, release config, dependencies, tooling, `AGENTS.md`,
-  the README, the docs site
+- **IMPORTANT: only changes to a published package use `feat` or `fix`** — `typescript/actions/`,
+  `typescript/models/`, `typescript/plugins/`, the `exports` and `files` in
+  `typescript/package.json`; `python/irondocs/` and the `[project]` tables of
+  `python/pyproject.toml`. Everything else MUST be `chore` or `docs` — CI and workflows, release
+  config, dependencies, tooling, `AGENTS.md`, the README, the docs site
 - This is not a style preference. release-please reads the commit type: a `fix:` on a workflow
   file cuts a release and burns a version number on a change no consumer can observe. Version
   numbers can never be reused
 - When in doubt, ask whether the change alters what someone installing the package gets.
   If it does not, it is `chore`
+- Each section is its own release-please component with its own version and changelog
+  (`typescript/CHANGELOG.md` tagged `vX.Y.Z`, `python/CHANGELOG.md` tagged `python-vX.Y.Z`),
+  shipped through one combined Release PR. A `feat` spanning both sections releases both, so land
+  a change that only moves or shares files as `chore`
 - Release config lives in `.release/config.json` and `.release/manifest.json`. The manifest
-  holds the current version and release-please maintains it — never hand-edit it
+  holds the current versions and release-please maintains it — never hand-edit it
 
 ## Docs
 

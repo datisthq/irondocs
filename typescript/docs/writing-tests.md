@@ -1,6 +1,6 @@
 ---
 title: Writing tests
-path: /writing-tests/
+path: /typescript/writing-tests/
 icon: file-pen-line
 order: 2
 description: Mark code blocks as runnable tests and how irondocs picks them up.
@@ -25,7 +25,7 @@ illustrative snippets and runnable assertions in the same article.
 The test name comes from the **nearest preceding heading**. Two blocks under
 the same heading are auto-suffixed `#1`, `#2`, and so on. A block with no
 preceding heading uses the file's basename. To override naming explicitly,
-see [Per-block options](/options/).
+see [Per-block options](/typescript/options/).
 
 ## Auto-injected helpers
 

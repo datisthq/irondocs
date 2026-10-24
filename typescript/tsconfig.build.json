@@ -1,0 +1,14 @@
+{
+  "$schema": "https://json.schemastore.org/tsconfig",
+
+  "extends": "./tsconfig.json",
+  "exclude": [
+    "${configDir}/*.config.ts",
+    "${configDir}/**/*.unit.ts",
+    "${configDir}/**/build/",
+    "${configDir}/**/compile/",
+    "${configDir}/**/fixtures/",
+    "${configDir}/**/examples/",
+    "${configDir}/docs/"
+  ]
+}

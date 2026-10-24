@@ -1,6 +1,6 @@
 ---
 title: Running tests
-path: /running-tests/
+path: /typescript/running-tests/
 icon: play
 order: 3
 description: How irondocs blocks show up in your test output, and how to filter or debug them.
@@ -39,7 +39,7 @@ test cases as far as the runner is concerned.
 ## Focusing or skipping individual blocks
 
 To narrow further than the runner's filtering, edit the fence itself with
-[`only` or `skip`](/options/). Useful while iterating on a single doctest.
+[`only` or `skip`](/typescript/options/). Useful while iterating on a single doctest.
 
 ## Debugging a failing doctest
 

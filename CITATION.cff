@@ -2,7 +2,7 @@ cff-version: 1.2.0
 message: "If you use this software, please cite it as below."
 type: software
 title: Irondocs
-abstract: Test runner plugin that executes TypeScript code blocks from Markdown docs as real Vitest or Jest tests.
+abstract: Test runner plugins that execute TypeScript and Python code blocks from Markdown docs as real Vitest, Jest or pytest tests.
 authors:
   - family-names: Karev
     given-names: Evgeny
@@ -16,4 +16,5 @@ keywords:
   - testing
   - vitest
   - jest
+  - pytest
   - markdown

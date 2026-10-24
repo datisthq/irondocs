@@ -1,0 +1,55 @@
+{
+  "name": "irondocs",
+  "version": "0.0.0-dev",
+  "description": "Test codeblocks in Vitest/Jest",
+  "keywords": [
+    "irondocs",
+    "jest",
+    "markdown",
+    "testing",
+    "vitest"
+  ],
+  "license": "MIT",
+  "author": "Evgeny Karev",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/datisthq/irondocs.git",
+    "directory": "typescript"
+  },
+  "files": [
+    "build"
+  ],
+  "type": "module",
+  "sideEffects": false,
+  "exports": {
+    "./jest": "./build/plugins/jest/index.js",
+    "./vite": "./build/plugins/vite/index.js"
+  },
+  "scripts": {
+    "build": "tsgo --project tsconfig.build.json",
+    "release": "pnpm publish --access public --ignore-scripts --no-git-checks",
+    "test": "pnpm type && pnpm unit",
+    "type": "tsgo --noEmit",
+    "unit": "vp test"
+  },
+  "dependencies": {
+    "cn": "0.2.4",
+    "mdast-util-to-string": "^4.0.0",
+    "remark-parse": "^11.0.0",
+    "ts-morph": "^27.0.2",
+    "unified": "^11.0.5"
+  },
+  "devDependencies": {
+    "@types/mdast": "^4.0.4",
+    "@types/node": "24.2.0",
+    "@typescript/native-preview": "7.0.0-dev.20260316.1",
+    "@vitest/coverage-v8": "catalog:",
+    "tempy": "3.2.0",
+    "vite": "catalog:",
+    "vite-plus": "catalog:",
+    "vitest": "catalog:"
+  },
+  "engines": {
+    "node": "^24.11.0"
+  }
+}

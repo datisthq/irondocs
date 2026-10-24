@@ -1,6 +1,6 @@
 ---
 title: Per-block options
-path: /options/
+path: /typescript/options/
 icon: settings-2
 order: 4
 description: Override test names, skip blocks, or focus on one with options in the fence info string.

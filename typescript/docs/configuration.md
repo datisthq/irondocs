@@ -1,6 +1,6 @@
 ---
 title: Configuration
-path: /configuration/
+path: /typescript/configuration/
 icon: settings
 order: 5
 description: Wire irondocs into vitest, vite-plus, or jest.

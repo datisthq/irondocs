@@ -48,13 +48,14 @@ function Hero() {
         </h1>
 
         <p className="mt-6 text-lg md:text-xl text-muted-foreground max-w-2xl mx-auto">
-          Mark a TypeScript code block in any <code>.md</code> file. Irondocs lifts it
-          into a real vitest or jest test — no separate spec file, no boilerplate.
+          Mark a TypeScript or Python code block in any <code>.md</code> file. Irondocs
+          lifts it into a real vitest, jest or pytest test — no separate spec file, no
+          boilerplate.
         </p>
 
         <div className="mt-10 flex flex-col sm:flex-row items-center justify-center gap-3">
           <Link
-            to="/introduction/"
+            to="/typescript/introduction/"
             className={cn(
               buttonVariants({ variant: "default", size: "lg" }),
               "px-5 no-underline",
@@ -124,7 +125,7 @@ const features: Feature[] = [
     icon: Layers,
     title: "Multi-runner",
     description:
-      "One vite plugin works for vitest and vite-plus. A sibling jest transformer covers jest projects.",
+      "One vite plugin works for vitest and vite-plus, a sibling jest transformer covers jest, and a pytest plugin covers Python.",
   },
   {
     icon: Braces,
@@ -320,7 +321,7 @@ function FinalCta() {
           </p>
           <div className="mt-10 flex flex-col sm:flex-row items-center justify-center gap-3">
             <Link
-              to="/writing-tests/"
+              to="/typescript/writing-tests/"
               className={cn(
                 buttonVariants({ variant: "default", size: "lg" }),
                 "px-5 no-underline",
@@ -330,7 +331,7 @@ function FinalCta() {
               <ArrowRight className="size-4" />
             </Link>
             <Link
-              to="/configuration/"
+              to="/typescript/configuration/"
               className={cn(
                 buttonVariants({ variant: "ghost", size: "lg" }),
                 "px-5 no-underline",
