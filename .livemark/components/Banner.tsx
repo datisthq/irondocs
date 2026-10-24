@@ -1,30 +1,29 @@
-import { Star, MessageCircle } from "lucide-react"
+import { ArrowRight } from "lucide-react"
 
-/** Technical preview banner displayed in the header */
 export function Banner() {
   return (
-    <div className="hidden md:flex flex-1 items-center justify-end">
-      <div className="rounded-xl border border-primary/20 bg-primary/2 dark:bg-primary/5 shadow-xs px-3 py-1.5 text-sm text-primary">
-        <span>
-          This project is in technical preview.{" "}
-          <a
-            href="https://github.com/datisthq/irondocs"
-            target="_blank"
-            rel="noopener noreferrer"
-            className="font-semibold hover:underline underline-offset-2"
-          >
-            <Star className="inline size-3.5 align-[-0.125em]" /> Star on GitHub
-          </a>{" "}
-          and{" "}
-          <a
-            href="https://github.com/datisthq/irondocs/discussions"
-            target="_blank"
-            rel="noopener noreferrer"
-            className="font-semibold hover:underline underline-offset-2"
-          >
-            <MessageCircle className="inline size-3.5 align-[-0.125em]" /> share feedback!
-          </a>
+    <div className="bg-banner text-banner-foreground">
+      {/* `relative` anchors the link's stretched `after:` box: the whole strip is one
+          click target, and `group-hover` moves the arrow from anywhere on it. */}
+      <div className="group relative mx-auto flex max-w-6xl items-center justify-center gap-2 px-4 py-2 text-center font-mono text-xs tracking-wide sm:px-6">
+        <span className="min-w-0 truncate">
+          <span className="hidden sm:inline">Irondocs is in technical preview</span>
+          <span className="sm:hidden">Technical preview</span>
         </span>
+        <span aria-hidden className="opacity-60">
+          ·
+        </span>
+        <a
+          href="https://github.com/datisthq/irondocs/discussions"
+          target="_blank"
+          rel="noopener noreferrer"
+          className="inline-flex shrink-0 items-center gap-1 no-underline after:absolute after:inset-0"
+        >
+          <span className="underline underline-offset-4 group-hover:no-underline">
+            Share feedback
+          </span>
+          <ArrowRight className="size-3 transition-transform group-hover:translate-x-0.5 group-active:translate-x-0.5 motion-reduce:transition-none" />
+        </a>
       </div>
     </div>
   )
