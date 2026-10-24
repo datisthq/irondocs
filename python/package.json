@@ -1,0 +1,15 @@
+{
+  "name": "irondocs-python",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "build": "uv build --out-dir build",
+    "format": "uv run ruff format",
+    "lint": "uv run ruff check && uv run ruff format --check",
+    "release": "uv publish build/*",
+    "setup": "uv sync",
+    "test": "pnpm type && pnpm unit",
+    "type": "uv run ty check",
+    "unit": "uv run pytest"
+  }
+}
