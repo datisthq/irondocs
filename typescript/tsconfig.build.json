@@ -9,6 +9,9 @@
     "${configDir}/**/compile/",
     "${configDir}/**/fixtures/",
     "${configDir}/**/examples/",
-    "${configDir}/docs/"
+    "${configDir}/.livemark/",
+    "${configDir}/docs/",
+    "${configDir}/scripts/",
+    "${configDir}/-test/"
   ]
 }

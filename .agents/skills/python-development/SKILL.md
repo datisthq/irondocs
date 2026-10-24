@@ -14,14 +14,15 @@ is Python.
 Run from the repo root; each wraps `uv run` in `python/package.json`:
 
 ```sh
-pnpm -C python setup    # uv sync: the venv and dev tools
-pnpm -C python lint     # ruff check + ruff format --check
-pnpm -C python type     # ty check
-pnpm -C python unit     # pytest: the units, then python/docs/ as doctests
-pnpm -C python build    # wheel + sdist into python/build/
+pnpm -C python setup          # uv sync: the venv and dev tools
+pnpm -C python check:lint     # ruff check + ruff format --check
+pnpm -C python check:types    # ty check
+pnpm -C python test:unit      # pytest: the units, then python/docs/ as doctests
+pnpm -C python build          # wheel + sdist into python/build/
 ```
 
 A single test: `uv run pytest irondocs/plugins/pytest_unit.py -k name` from `python/`.
+The root `pnpm check` and `pnpm test:unit` chain these after the TypeScript ones.
 
 ## Layout
 

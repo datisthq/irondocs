@@ -27,10 +27,11 @@
   },
   "scripts": {
     "build": "tsgo --project tsconfig.build.json",
+    "check:types": "tsgo --noEmit",
+    "measure:coverage": "vp test --run --coverage",
     "release": "pnpm publish --access public --ignore-scripts --no-git-checks",
-    "test": "pnpm type && pnpm unit",
-    "type": "tsgo --noEmit",
-    "unit": "vp test"
+    "test": "pnpm check:types && pnpm test:unit",
+    "test:unit": "vp test"
   },
   "dependencies": {
     "cn": "0.2.4",
