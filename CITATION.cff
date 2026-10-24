@@ -1,17 +1,17 @@
 cff-version: 1.2.0
 message: "If you use this software, please cite it as below."
 type: software
-title: Testdocs
+title: Irondocs
 abstract: Test runner plugin that executes TypeScript code blocks from Markdown docs as real Vitest or Jest tests.
 authors:
   - family-names: Karev
     given-names: Evgeny
     email: evgeny.karev@datist.io
-url: "https://testdocs.dev"
-repository-code: "https://github.com/datisthq/testdocs"
+url: "https://irondocs.dev"
+repository-code: "https://github.com/datisthq/irondocs"
 license: MIT
 keywords:
-  - testdocs
+  - irondocs
   - documentation
   - testing
   - vitest

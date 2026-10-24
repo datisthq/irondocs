@@ -1,14 +1,14 @@
 blank_issues_enabled: false
 contact_links:
   - name: 👀 Explore Discussions
-    url: https://github.com/datisthq/testdocs/discussions
+    url: https://github.com/datisthq/irondocs/discussions
     about: Before opening a discussion, please check if the topic has already been discussed. Please vote on existing discussions to show your support.
   - name: 💡 Feature Request
-    url: https://github.com/datisthq/testdocs/discussions/new?category=ideas
-    about: Suggest an improvement you'd like to see added to Testdocs
+    url: https://github.com/datisthq/irondocs/discussions/new?category=ideas
+    about: Suggest an improvement you'd like to see added to Irondocs
   - name: 🚀 Implementation
-    url: https://github.com/datisthq/testdocs/discussions/new?category=show-and-tell
-    about: Share your Testdocs related project with the community
+    url: https://github.com/datisthq/irondocs/discussions/new?category=show-and-tell
+    about: Share your Irondocs related project with the community
   - name: 💁 Question
-    url: https://github.com/datisthq/testdocs/discussions/new?category=q-a
-    about: Ask a question about Testdocs
+    url: https://github.com/datisthq/irondocs/discussions/new?category=q-a
+    about: Ask a question about Irondocs

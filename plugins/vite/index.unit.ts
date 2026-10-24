@@ -1,11 +1,11 @@
 import { describe, expect, it } from "vite-plus/test"
-import testdocs from "./index.ts"
+import irondocs from "./index.ts"
 
-describe("testdocs vite plugin", () => {
-  const plugin = testdocs()
+describe("irondocs vite plugin", () => {
+  const plugin = irondocs()
 
   it("has the expected plugin name", () => {
-    expect(plugin.name).toBe("testdocs")
+    expect(plugin.name).toBe("irondocs")
   })
 
   it("transforms a marked code block end-to-end", () => {

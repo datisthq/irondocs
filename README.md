@@ -1,4 +1,4 @@
-# Testdocs
+# Irondocs
 
 Run TypeScript code blocks from your markdown docs as real vitest or jest
 tests. Mark a fenced block with `test`, and it becomes a runnable assertion —
@@ -7,9 +7,9 @@ no separate test file, no boilerplate, no drift between docs and code.
 ## Install
 
 ```bash
-pnpm add -D testdocs
+pnpm add -D irondocs
 # or
-npm install --save-dev testdocs
+npm install --save-dev irondocs
 ```
 
 ## Write a doctest
@@ -33,11 +33,11 @@ illustrative snippets and runnable assertions in the same article.
 For vitest (or vite-plus), add the plugin and put `.md` in `test.include`:
 
 ```ts title="vite.config.ts"
-import testdocs from "testdocs/vite"
+import irondocs from "irondocs/vite"
 import { defineConfig } from "vitest/config"
 
 export default defineConfig({
-  plugins: [testdocs()],
+  plugins: [irondocs()],
   test: {
     include: ["**/*.test.ts", "docs/**/*.md"],
   },
@@ -48,7 +48,7 @@ For jest, register the transformer:
 
 ```ts title="jest.config.ts"
 export default {
-  transform: { "\\.md$": "testdocs/jest" },
+  transform: { "\\.md$": "irondocs/jest" },
   testMatch: ["**/*.test.ts", "**/docs/**/*.md"],
 }
 ```

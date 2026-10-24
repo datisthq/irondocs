@@ -48,7 +48,7 @@ function Hero() {
         </h1>
 
         <p className="mt-6 text-lg md:text-xl text-muted-foreground max-w-2xl mx-auto">
-          Mark a TypeScript code block in any <code>.md</code> file. Testdocs lifts it
+          Mark a TypeScript code block in any <code>.md</code> file. Irondocs lifts it
           into a real vitest or jest test — no separate spec file, no boilerplate.
         </p>
 
@@ -64,7 +64,7 @@ function Hero() {
             <ArrowRight className="size-4" />
           </Link>
           <a
-            href="https://github.com/datisthq/testdocs"
+            href="https://github.com/datisthq/irondocs"
             target="_blank"
             rel="noopener noreferrer"
             className={cn(
@@ -80,7 +80,7 @@ function Hero() {
         <div className="mt-10 hidden sm:inline-flex items-center gap-3 rounded-lg border border-border bg-card/50 backdrop-blur px-4 py-2.5 font-mono text-sm text-muted-foreground">
           <span className="text-primary select-none">$</span>
           <span>
-            <span className="text-foreground">npm install </span> testdocs
+            <span className="text-foreground">npm install </span> irondocs
           </span>
         </div>
       </div>

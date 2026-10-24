@@ -1,7 +1,7 @@
 import { describe, expect, it } from "vite-plus/test"
 import transformer from "./index.ts"
 
-describe("testdocs jest transformer", () => {
+describe("irondocs jest transformer", () => {
   it("transforms a marked code block end-to-end", () => {
     const md = "# Sum\n\n```ts test\nexpect(1).toBe(1)\n```\n"
     const { code } = transformer.process(md, "/path/foo.md")

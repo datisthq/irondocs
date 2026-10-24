@@ -8,7 +8,7 @@ export function Banner() {
         <span>
           This project is in technical preview.{" "}
           <a
-            href="https://github.com/datisthq/testdocs"
+            href="https://github.com/datisthq/irondocs"
             target="_blank"
             rel="noopener noreferrer"
             className="font-semibold hover:underline underline-offset-2"
@@ -17,7 +17,7 @@ export function Banner() {
           </a>{" "}
           and{" "}
           <a
-            href="https://github.com/datisthq/testdocs/discussions"
+            href="https://github.com/datisthq/irondocs/discussions"
             target="_blank"
             rel="noopener noreferrer"
             className="font-semibold hover:underline underline-offset-2"

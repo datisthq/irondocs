@@ -1,13 +1,13 @@
 {
-  "name": "testdocs",
+  "name": "irondocs",
   "version": "0.3.1",
-  "description": "Testdocs description",
+  "description": "Irondocs description",
   "keywords": [
-    "testdocs"
+    "irondocs"
   ],
   "license": "MIT",
   "author": "Evgeny Karev",
-  "repository": "https://github.com/datisthq/testdocs",
+  "repository": "https://github.com/datisthq/irondocs",
   "files": [
     "build"
   ],

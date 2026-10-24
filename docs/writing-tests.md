@@ -3,7 +3,7 @@ title: Writing tests
 path: /writing-tests/
 icon: file-pen-line
 order: 2
-description: Mark code blocks as runnable tests and how testdocs picks them up.
+description: Mark code blocks as runnable tests and how irondocs picks them up.
 ---
 
 # Writing tests

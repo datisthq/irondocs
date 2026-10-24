@@ -1,14 +1,14 @@
 # Contributing
 
-Testdocs is an open-source project and we'd love your help — whether that's fixing a bug, polishing the docs, or proposing a new runner integration. This guide walks through everything you need to get a change from your editor into a release.
+Irondocs is an open-source project and we'd love your help — whether that's fixing a bug, polishing the docs, or proposing a new runner integration. This guide walks through everything you need to get a change from your editor into a release.
 
 ## Quick start
 
 You'll need [Node.js](https://nodejs.org/) 24+ and [pnpm](https://pnpm.io/) 10+. Then:
 
 ```bash
-git clone https://github.com/datisthq/testdocs.git
-cd testdocs
+git clone https://github.com/datisthq/irondocs.git
+cd irondocs
 pnpm install
 pnpm docs:start
 ```
@@ -18,7 +18,7 @@ pnpm docs:start
 ## Repository layout
 
 ```
-testdocs/
+irondocs/
 ├── actions/             # noun/verb action modules
 │   ├── markdown/        #   parse a markdown source into Block[]
 │   ├── code/            #   partition imports/body via ts-morph
@@ -26,15 +26,15 @@ testdocs/
 │   └── project/         #   shared ts-morph Project bootstrap
 ├── models/              # type definitions (Block, Partition, Plugin)
 ├── plugins/
-│   ├── vite/            # vite plugin entry (testdocs/vite)
-│   └── jest/            # jest transformer entry (testdocs/jest)
+│   ├── vite/            # vite plugin entry (irondocs/vite)
+│   └── jest/            # jest transformer entry (irondocs/jest)
 ├── docs/                # docs-site content; doubles as doctest fixtures
 ├── livemark.config.ts   # docs-site config
 ├── wrangler.jsonc       # Cloudflare Workers deploy for the docs site
 └── vite.config.ts       # vite-plus shared config + dogfood wiring
 ```
 
-The package ships only `build/` (compiled by `tsgo`). Public exports are the two subpaths declared in `package.json`: `testdocs/vite` and `testdocs/jest`.
+The package ships only `build/` (compiled by `tsgo`). Public exports are the two subpaths declared in `package.json`: `irondocs/vite` and `irondocs/jest`.
 
 ## Local commands
 
@@ -67,7 +67,7 @@ See [`AGENTS.md`](AGENTS.md) for the canonical list. In short:
 
 1. **Open an issue first** for anything bigger than a typo or a small bug. It's easier to align on direction before code.
 2. **Branch from `main`** with a short descriptive name (e.g. `fix-fence-scanner`, `feat-source-maps`).
-3. **Write a focused commit history**. Testdocs uses [Conventional Commits](https://www.conventionalcommits.org/) — the prefix drives semantic-release:
+3. **Write a focused commit history**. Irondocs uses [Conventional Commits](https://www.conventionalcommits.org/) — the prefix drives semantic-release:
    - `fix:` — bug fix → patch release
    - `feat:` — new feature → minor release
    - `fix!:` / `feat!:` or a `BREAKING CHANGE:` footer → major release
@@ -83,8 +83,8 @@ For a local version bump (e.g. preparing a non-semantic-release branch), use `pn
 
 ## Where to find help
 
-- **Bugs and feature requests**: [GitHub Issues](https://github.com/datisthq/testdocs/issues)
-- **Discussion / ideas**: [GitHub Discussions](https://github.com/datisthq/testdocs/discussions)
-- **Source**: [github.com/datisthq/testdocs](https://github.com/datisthq/testdocs)
+- **Bugs and feature requests**: [GitHub Issues](https://github.com/datisthq/irondocs/issues)
+- **Discussion / ideas**: [GitHub Discussions](https://github.com/datisthq/irondocs/discussions)
+- **Source**: [github.com/datisthq/irondocs](https://github.com/datisthq/irondocs)
 
-Thanks for helping make Testdocs better.
+Thanks for helping make Irondocs better.

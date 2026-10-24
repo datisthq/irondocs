@@ -1,8 +1,8 @@
 import { defineConfig } from "livemark"
 
 export default defineConfig({
-  site: "https://testdocs.dev",
-  title: "Testdocs",
+  site: "https://irondocs.dev",
+  title: "Irondocs",
   description: "Test codeblocks in Vitest/Jest",
   logo: "/logo.svg",
   favicon: "/logo.png",
@@ -19,7 +19,7 @@ export default defineConfig({
   ],
   links: [
     {
-      url: "https://github.com/datisthq/testdocs",
+      url: "https://github.com/datisthq/irondocs",
       title: "GitHub",
       icon: "github",
     },
@@ -29,7 +29,7 @@ export default defineConfig({
       file: "README.md",
       article: {
         title: "Introduction",
-        description: "Install testdocs and get started.",
+        description: "Install irondocs and get started.",
         icon: "rocket",
         order: 1,
         path: "/introduction/",
@@ -40,7 +40,7 @@ export default defineConfig({
       article: {
         title: "Contributing",
         description:
-          "How to set up testdocs locally, propose changes, and ship a release.",
+          "How to set up irondocs locally, propose changes, and ship a release.",
         icon: "heart-handshake",
         order: -1,
         path: "/contributing/",

@@ -12,10 +12,10 @@ const plugin: Plugin = {
 /**
  * Vite plugin that turns runnable code blocks in `.md` files into vitest tests.
  */
-export default function testdocs(): VitePlugin {
+export default function irondocs(): VitePlugin {
   const project = createProject()
   return {
-    name: "testdocs",
+    name: "irondocs",
     transform(code, id) {
       if (!id.endsWith(".md")) return
       const blocks = parseMarkdown(code)

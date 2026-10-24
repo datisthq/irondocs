@@ -3,7 +3,7 @@ title: Running tests
 path: /running-tests/
 icon: play
 order: 3
-description: How testdocs blocks show up in your test output, and how to filter or debug them.
+description: How irondocs blocks show up in your test output, and how to filter or debug them.
 ---
 
 # Running tests

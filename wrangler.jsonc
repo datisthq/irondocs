@@ -1,5 +1,5 @@
 {
-  "name": "testdocs",
+  "name": "irondocs",
   "$schema": "node_modules/wrangler/config-schema.json",
   "compatibility_date": "2026-04-01",
   "preview_urls": true,
@@ -9,7 +9,7 @@
   },
   "routes": [
     {
-      "pattern": "testdocs.dev",
+      "pattern": "irondocs.dev",
       "custom_domain": true,
     },
   ],
