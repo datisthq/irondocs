@@ -16,6 +16,7 @@ export default defineConfig({
     "typescript/CONTRIBUTING.md",
     "typescript/CHANGELOG.md",
   ],
+  skills: ".skills/*/SKILL.md",
   sections: [
     { title: "Python", prefix: "/python/", icon: "code" },
     { title: "TypeScript", prefix: "/typescript/", icon: "code-xml" },

@@ -5,7 +5,7 @@ import { describe, expect, it } from "vite-plus/test"
 const ROOT = resolve(import.meta.dirname, "..", "..")
 const REPO_SKILLS = join(ROOT, ".agents", "skills")
 const SECTIONS = ["typescript", "python"].filter(name => existsSync(join(ROOT, name)))
-const SHIPPED_SKILLS = SECTIONS.map(name => join(ROOT, name, "skills")).filter(existsSync)
+const SHIPPED_SKILLS = [join(ROOT, ".skills")]
 
 describe("documentation stays true", () => {
   it("wires .claude/skills to .agents/skills", () => {
@@ -132,6 +132,7 @@ const WORKSPACE = new Set([
   ".github",
   ".release",
   ".scripts",
+  ".skills",
 ])
 
 // Code only: text and shell blocks hold real CLI output, which is as wide as it is
@@ -141,14 +142,17 @@ function readSnippetDocs() {
   const paths = ["README.md"]
   for (const section of SECTIONS) {
     paths.push(join(section, "README.md"))
-    for (const directory of [join(section, "docs"), join(section, "skills")]) {
-      if (!existsSync(join(ROOT, directory))) continue
-      for (const entry of readdirSync(join(ROOT, directory), { recursive: true })) {
-        if (String(entry).endsWith(".md")) paths.push(join(directory, String(entry)))
-      }
-    }
+    paths.push(...readMarkdown(join(section, "docs")))
   }
-  return paths
+  return [...paths, ...readMarkdown(".skills")]
+}
+
+function readMarkdown(directory: string) {
+  if (!existsSync(join(ROOT, directory))) return []
+  return readdirSync(join(ROOT, directory), { recursive: true })
+    .map(String)
+    .filter(entry => entry.endsWith(".md"))
+    .map(entry => join(directory, entry))
 }
 
 function readScripts(directory: string) {

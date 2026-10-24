@@ -47,7 +47,13 @@ Repo skills live in `.agents/skills/` (reached by Claude Code through the `.clau
 | `python-development`  | working in `python/` — layout, uv commands, typing, twins               |
 | `worktree-workflow`   | starting, running and landing a `.worktrees/<name>` branch              |
 
-**There is exactly one `AGENTS.md`, at the root.** `.scripts/-test/docs.unit.ts` enforces that, along with every path and `pnpm` command these documents name and the table above.
+Shipped skills live in `.skills/` and teach coding agents to **use** Irondocs; the docs site links them. Read the matching one before changing the behaviour it describes, and update it in the same commit:
+
+| skill            | when                                                           |
+| ---------------- | -------------------------------------------------------------- |
+| `irondocs-tests` | writing, wiring or debugging markdown blocks that run as tests |
+
+**There is exactly one `AGENTS.md`, at the root.** `.scripts/-test/docs.unit.ts` enforces that, along with every path and `pnpm` command these documents name and the two tables above.
 
 ## Commands
 
@@ -74,7 +80,7 @@ The root is a private pnpm workspace (`package.json`, `pnpm-workspace.yaml`): fo
 - `python/` — the PyPI package, a uv project; `python/irondocs/` mirrors `typescript/` module for module, plus `plugins/pytest.py`, with `docs/` beside it (**`python-development`**)
 - `README.md`, `CONTRIBUTING.md` and `livemark.config.ts` — the GitHub overview, the contributor guide (copied into each section for its docs-site page; the docs guard keeps the copies equal) and the docs site's config
 
-Dot-directories hold non-package code: `.agents/` repo skills, `.livemark/` the docs site's escapes, `.release/` release-please config, `.scripts/` repo-wide guards (`.scripts/-test/`) and the `pnpm squash` script, whose tests the root `vite.config.ts` runs.
+Dot-directories hold non-package code: `.agents/` repo skills, `.skills/` shipped skills, `.livemark/` the docs site's escapes, `.release/` release-please config, `.scripts/` repo-wide guards (`.scripts/-test/`) and the `pnpm squash` script, whose tests the root `vite.config.ts` runs.
 
 ## Conventions
 
@@ -90,7 +96,7 @@ Dot-directories hold non-package code: `.agents/` repo skills, `.livemark/` the 
 
 Conventional Commits drive [release-please](https://github.com/googleapis/release-please): a `feat` or `fix` landing on `main` opens a Release PR, and merging that PR cuts the version, tags it and publishes. Merging is the gate — nothing ships without it.
 
-- **IMPORTANT: only changes to a published package use `feat` or `fix`** — `typescript/actions/`, `typescript/models/`, `typescript/plugins/`, the `exports` and `files` in `typescript/package.json`; `python/irondocs/` and the `[project]` tables of `python/pyproject.toml`. Everything else MUST be `chore` or `docs`: CI and workflows, release config, dependencies, tooling, `AGENTS.md`, `.agents/skills/`, the README, the docs site
+- **IMPORTANT: only changes to a published package use `feat` or `fix`** — `typescript/actions/`, `typescript/models/`, `typescript/plugins/`, the `exports` and `files` in `typescript/package.json`; `python/irondocs/` and the `[project]` tables of `python/pyproject.toml`. Everything else MUST be `chore` or `docs`: CI and workflows, release config, dependencies, tooling, `AGENTS.md`, `.agents/skills/`, the README, the docs site, the shipped `.skills/` (linked from the site, not in any package)
 - This is not a style preference. release-please reads the commit type: a `fix:` on a workflow file cuts a release and burns a version number on a change no consumer can observe. Version numbers can never be reused
 - When in doubt, ask whether the change alters what someone installing the package gets. If it does not, it is `chore`
 - release-please assigns a commit to every component whose path it touches: a `feat` spanning both sections releases both, so land a change that only moves or shares files as `chore`

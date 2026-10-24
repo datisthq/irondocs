@@ -14,3 +14,8 @@ from the nearest heading, the same `name="..."`, `skip` and `only` options and
 the same hoisting of imports across a file's blocks. This repository holds both
 implementations — `typescript/` and `python/`; see
 [Contributing](CONTRIBUTING.md) for the layout and the commands.
+
+## Agent skills
+
+[`.skills/`](.skills/) holds `irondocs-tests`, a skill that teaches coding agents to write, wire
+and debug markdown tests with Irondocs. Copy it into your agent's skills directory to use it.
