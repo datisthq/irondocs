@@ -2,6 +2,7 @@ import { toString } from "mdast-util-to-string"
 import remarkParse from "remark-parse"
 import { unified } from "unified"
 import type { Block } from "../../models/block.ts"
+import { parseFence } from "../fence/parse.ts"
 
 /**
  * Extract runnable code blocks from markdown. A block is runnable when its
@@ -20,16 +21,14 @@ export function parseMarkdown(source: string): Block[] {
       const lang = node.lang ?? ""
       if (lang !== "ts" && lang !== "tsx") continue
 
-      const meta = node.meta ?? ""
-      const nameMatch = meta.match(/\bname="([^"]*)"/)
-      const stripped = meta.replace(/\bname="[^"]*"/g, "")
-      const tokens = stripped.split(/\s+/).filter(Boolean)
-      if (!tokens.includes("test")) continue
+      const fence = parseFence(node.meta ?? "")
+      if (!fence.options.includes("test")) continue
 
       const block: Block = { heading: currentHeading, code: node.value }
-      if (nameMatch?.[1] !== undefined) block.name = nameMatch[1]
-      if (tokens.includes("skip")) block.skip = true
-      if (tokens.includes("only")) block.only = true
+      const name = fence.attributes.name
+      if (name !== undefined) block.name = name
+      if (fence.options.includes("skip")) block.skip = true
+      if (fence.options.includes("only")) block.only = true
       blocks.push(block)
     }
   }

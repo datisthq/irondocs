@@ -90,3 +90,29 @@ class TestParseMarkdown:
     def test_does_not_match_name_inside_another_word(self):
         md = '## H\n\n```python test myname="x"\ny\n```\n'
         assert parse_markdown(md) == [Block(heading="H", code="y", line=4)]
+
+    def test_reads_options_only_from_bare_tokens_never_from_attribute_values(self):
+        md = "\n".join(
+            [
+                "## H",
+                '```python title="how to test it"',
+                "a",
+                "```",
+                '```python test title="the only one to skip"',
+                "b",
+                "```",
+            ]
+        )
+        assert parse_markdown(md) == [Block(heading="H", code="b", line=6)]
+
+    def test_does_not_read_data_name_as_the_name(self):
+        md = '## H\n\n```python test data-name="x"\ny\n```\n'
+        assert parse_markdown(md) == [Block(heading="H", code="y", line=4)]
+
+    def test_reads_a_single_quoted_name(self):
+        md = "## H\n\n```python test name='x y'\ny\n```\n"
+        assert parse_markdown(md) == [Block(heading="H", code="y", line=4, name="x y")]
+
+    def test_accepts_a_tab_between_the_language_and_its_options(self):
+        md = "## H\n\n```python\ttest\ny\n```\n"
+        assert parse_markdown(md) == [Block(heading="H", code="y", line=4)]

@@ -94,4 +94,27 @@ describe("parseMarkdown", () => {
     const md = '## H\n\n```ts test myname="x"\ny\n```\n'
     expect(parseMarkdown(md)).toEqual([{ heading: "H", code: "y" }])
   })
+
+  it("reads options only from bare tokens, never from attribute values", () => {
+    const md = [
+      "## H",
+      '```ts title="how to test it"',
+      "a",
+      "```",
+      '```ts test title="the only one to skip"',
+      "b",
+      "```",
+    ].join("\n")
+    expect(parseMarkdown(md)).toEqual([{ heading: "H", code: "b" }])
+  })
+
+  it("does not read `data-name` as the name", () => {
+    const md = '## H\n\n```ts test data-name="x"\ny\n```\n'
+    expect(parseMarkdown(md)).toEqual([{ heading: "H", code: "y" }])
+  })
+
+  it("reads a single-quoted name", () => {
+    const md = "## H\n\n```ts test name='x y'\ny\n```\n"
+    expect(parseMarkdown(md)).toEqual([{ heading: "H", code: "y", name: "x y" }])
+  })
 })

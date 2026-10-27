@@ -17,7 +17,9 @@ The fence info string accepts these tokens after `test`:
 | `only`       | flag   | Emit as `it.only(...)` — focus only on this test in its file.                   |
 
 The options follow livemark's fence-info convention: `key="value"` for
-parametric options, bare tokens for booleans.
+parametric options, bare tokens for booleans. Values may be double- or
+single-quoted (`\"` escapes a quote), and words inside any attribute, such as
+`title="the only example"`, are never read as options.
 
 ## Naming a test explicitly
 

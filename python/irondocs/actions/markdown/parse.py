@@ -1,12 +1,10 @@
-import re
-
 from markdown_it import MarkdownIt
 from markdown_it.token import Token
 
 from ...models.block import Block
+from ..fence.parse import parse_fence
 
 LANGUAGES = {"py", "python"}
-NAME_PATTERN = re.compile(r'\bname="([^"]*)"')
 
 
 def parse_markdown(source: str) -> list[Block]:
@@ -25,13 +23,12 @@ def parse_markdown(source: str) -> list[Block]:
         if token.type == "heading_open":
             current_heading = read_text(tokens[index + 1])
         elif token.type == "fence":
-            lang, _, meta = token.info.strip().partition(" ")
+            lang, *rest = token.info.split(maxsplit=1) or [""]
             if lang not in LANGUAGES:
                 continue
 
-            name_match = NAME_PATTERN.search(meta)
-            options = NAME_PATTERN.sub("", meta).split()
-            if "test" not in options:
+            fence = parse_fence(" ".join(rest))
+            if "test" not in fence.options:
                 continue
 
             block = Block(
@@ -39,11 +36,10 @@ def parse_markdown(source: str) -> list[Block]:
                 code=token.content.removesuffix("\n"),
                 line=token.map[0] + 2 if token.map else 1,
             )
-            if name_match:
-                block.name = name_match[1]
-            if "skip" in options:
+            block.name = fence.attributes.get("name")
+            if "skip" in fence.options:
                 block.skip = True
-            if "only" in options:
+            if "only" in fence.options:
                 block.only = True
             blocks.append(block)
     return blocks

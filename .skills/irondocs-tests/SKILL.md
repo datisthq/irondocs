@@ -72,6 +72,7 @@ A test is named after the nearest preceding heading. Two blocks under one headin
 | `skip`       | reported as skipped, not run                                      |
 | `only`       | runs only the `only` blocks of that file                          |
 
+Other attributes such as `title="..."` are ignored, and words inside them never count as options.
 `skip` beats `only` on the same block. Don't leave `only` in a committed doc: it silently skips
 every other block in the file.
 
