@@ -10,7 +10,7 @@ import { parseFence } from "../fence/parse.ts"
  * The fence may also carry `skip`, `only`, and `name="..."` options.
  */
 export function parseMarkdown(source: string): Block[] {
-  const tree = unified().use(remarkParse).parse(source)
+  const tree = unified().use(remarkParse).parse(blankFrontMatter(source))
   const blocks: Block[] = []
   let currentHeading = ""
 
@@ -33,4 +33,12 @@ export function parseMarkdown(source: string): Block[] {
     }
   }
   return blocks
+}
+
+// Blanked, not cut, so block lines keep matching the file; remark would read the closing
+// `---` as a setext heading underline and name every test after the YAML
+function blankFrontMatter(source: string) {
+  const match = source.match(/^---\r?\n[\s\S]*?\r?\n(?:---|\.\.\.)[ \t]*(?=\r?\n|$)/)
+  if (!match) return source
+  return match[0].replace(/[^\r\n]/g, "") + source.slice(match[0].length)
 }

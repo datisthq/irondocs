@@ -64,7 +64,8 @@ assert add(1, 2) == 3
 ## Names and options
 
 A test is named after the nearest preceding heading. Two blocks under one heading become
-`Heading #1`, `Heading #2`; a block before any heading takes the file's basename.
+`Heading #1`, `Heading #2`; a block before any heading takes the file's basename, even under YAML front
+matter.
 
 | option       | effect                                                            |
 | ------------ | ----------------------------------------------------------------- |

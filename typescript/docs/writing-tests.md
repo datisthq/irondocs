@@ -24,8 +24,9 @@ illustrative snippets and runnable assertions in the same article.
 
 The test name comes from the **nearest preceding heading**. Two blocks under
 the same heading are auto-suffixed `#1`, `#2`, and so on. A block with no
-preceding heading uses the file's basename. To override naming explicitly,
-see [Per-block options](/typescript/options/).
+preceding heading uses the file's basename; YAML front matter never counts as a
+heading. To override naming explicitly, see
+[Per-block options](/typescript/options/).
 
 ## Auto-injected helpers
 

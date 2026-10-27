@@ -117,4 +117,14 @@ describe("parseMarkdown", () => {
     const md = "## H\n\n```ts test name='x y'\ny\n```\n"
     expect(parseMarkdown(md)).toEqual([{ heading: "H", code: "y", name: "x y" }])
   })
+
+  it("never reads YAML front matter as a heading", () => {
+    const md = "---\ntitle: Page\norder: 2\n---\n\n```ts test\na\n```\n"
+    expect(parseMarkdown(md)).toEqual([{ heading: "", code: "a" }])
+  })
+
+  it("keeps the first heading of a file that starts with a BOM", () => {
+    const md = "\uFEFF# Title\n\n```ts test\na\n```\n"
+    expect(parseMarkdown(md)).toEqual([{ heading: "Title", code: "a" }])
+  })
 })

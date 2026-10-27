@@ -116,3 +116,11 @@ class TestParseMarkdown:
     def test_accepts_a_tab_between_the_language_and_its_options(self):
         md = "## H\n\n```python\ttest\ny\n```\n"
         assert parse_markdown(md) == [Block(heading="H", code="y", line=4)]
+
+    def test_never_reads_yaml_front_matter_as_a_heading(self):
+        md = "---\ntitle: Page\norder: 2\n---\n\n```python test\na\n```\n"
+        assert parse_markdown(md) == [Block(heading="", code="a", line=7)]
+
+    def test_keeps_the_first_heading_of_a_file_that_starts_with_a_bom(self):
+        md = "\ufeff# Title\n\n```python test\na\n```\n"
+        assert parse_markdown(md) == [Block(heading="Title", code="a", line=4)]

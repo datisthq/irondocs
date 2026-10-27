@@ -1,3 +1,5 @@
+import re
+
 from markdown_it import MarkdownIt
 from markdown_it.token import Token
 
@@ -5,6 +7,8 @@ from ...models.block import Block
 from ..fence.parse import parse_fence
 
 LANGUAGES = {"py", "python"}
+FRONT_MATTER = re.compile(r"\A---\r?\n.*?\r?\n(?:---|\.\.\.)[ \t]*(?=\r?\n|\Z)", re.S)
+NOT_NEWLINE = re.compile(r"[^\r\n]")
 
 
 def parse_markdown(source: str) -> list[Block]:
@@ -13,7 +17,9 @@ def parse_markdown(source: str) -> list[Block]:
     fence info string starts with `python` or `py` and includes the token `test`.
     The fence may also carry `skip`, `only`, and `name="..."` options.
     """
-    tokens = MarkdownIt("commonmark").parse(source)
+    tokens = MarkdownIt("commonmark").parse(
+        blank_front_matter(source.removeprefix("\ufeff"))
+    )
     blocks: list[Block] = []
     current_heading = ""
 
@@ -43,6 +49,15 @@ def parse_markdown(source: str) -> list[Block]:
                 block.only = True
             blocks.append(block)
     return blocks
+
+
+# Blanked, not cut, so block lines keep matching the file; markdown-it would read the closing
+# `---` as a setext heading underline and name every test after the YAML
+def blank_front_matter(source: str) -> str:
+    match = FRONT_MATTER.match(source)
+    if not match:
+        return source
+    return NOT_NEWLINE.sub("", match[0]) + source[match.end() :]
 
 
 def read_text(token: Token) -> str:
