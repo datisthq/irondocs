@@ -43,6 +43,6 @@ irondocs_files = ["docs/*.md"]
 ```
 
 Run your usual `pytest` — your `.md` files now run alongside your `test_*.py`
-files. See [Writing tests](/python/writing-tests/) for the marker syntax,
-[Running tests](/python/running-tests/) for what to expect at the terminal, and
-[Configuration](/python/configuration/) for the options.
+files. See [Writing tests](https://irondocs.dev/python/writing-tests/) for the marker syntax,
+[Running tests](https://irondocs.dev/python/running-tests/) for what to expect at the terminal, and
+[Configuration](https://irondocs.dev/python/configuration/) for the options.

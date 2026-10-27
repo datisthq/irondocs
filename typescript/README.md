@@ -54,6 +54,6 @@ export default {
 ```
 
 Run your usual `pnpm test` — your `.md` files now run alongside your `*.test.ts`
-files. See [Writing tests](/typescript/writing-tests/) for the marker syntax,
-[Running tests](/typescript/running-tests/) for what to expect at the terminal, and
-[Configuration](/typescript/configuration/) for runner-specific notes.
+files. See [Writing tests](https://irondocs.dev/typescript/writing-tests/) for the marker syntax,
+[Running tests](https://irondocs.dev/typescript/running-tests/) for what to expect at the terminal, and
+[Configuration](https://irondocs.dev/typescript/configuration/) for runner-specific notes.
