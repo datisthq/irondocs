@@ -5,15 +5,20 @@ from collections.abc import Iterator
 from fnmatch import fnmatch
 from pathlib import Path
 from types import CodeType
+from typing import TYPE_CHECKING
 
 import pytest
-from _pytest._code.code import ExceptionInfo, TerminalRepr, TracebackStyle
+from _pytest._code.code import ExceptionInfo, TerminalRepr
 from _pytest.assertion.rewrite import rewrite_asserts
 
 from ..actions.code.partition import partition_code
 from ..actions.markdown.parse import parse_markdown
 from ..actions.test.render import render_test_module
 from ..models.module import Doctest
+
+# pytest < 8.3 has no public `TracebackStyle`, and the plugin loads on every pytest run
+if TYPE_CHECKING:
+    from _pytest._code.code import TracebackStyle
 
 
 def pytest_addoption(parser: pytest.Parser):
@@ -94,7 +99,7 @@ class DoctestItem(pytest.Item):
     def repr_failure(
         self,
         excinfo: ExceptionInfo[BaseException],
-        style: TracebackStyle | None = None,
+        style: "TracebackStyle | None" = None,
     ) -> str | TerminalRepr:
         excinfo.traceback = excinfo.traceback.cut(path=self.path)
         return super().repr_failure(excinfo, style)

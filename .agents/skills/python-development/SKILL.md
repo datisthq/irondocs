@@ -41,6 +41,10 @@ The root `pnpm check` and `pnpm test:unit` chain these after the TypeScript ones
 ## Typing
 
 - Python 3.12+ syntax; no `Any`, no casts and no `# ty: ignore` without permission
+- A name imported from pytest's private `_pytest` modules must exist at the `pytest` floor in
+  `[project] dependencies`, or sit under `if TYPE_CHECKING:`: the plugin loads on every pytest
+  run, so a missing name crashes even `pytest --version`. The `lowest` job in `test.yaml` runs
+  the units on those floors (`uv run --resolution lowest-direct pytest`)
 - Never name a model `Test*`: pytest collects it from any `*_unit.py` that imports it, and the
   collection warning is an error under `filterwarnings`
 
