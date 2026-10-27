@@ -12,9 +12,16 @@ describe("irondocs jest transformer", () => {
     expect(code).not.toContain(`await import("vite-plus/test")`)
   })
 
+  it("strips TypeScript syntax from a ts block", () => {
+    const md = "# T\n\n```ts test\nconst n: number = 1\n```\n"
+    const { code } = transformer.process(md, "/path/t.md")
+    expect(code).toContain("const n = 1")
+    expect(code).not.toContain("number")
+  })
+
   it("returns export {} for md files with no marked blocks", () => {
     const { code } = transformer.process("# H\n\n```ts\nx\n```\n", "/path/empty.md")
-    expect(code).toBe("export {}\n")
+    expect(code).toBe("export {};\n")
   })
 
   it("passes through non-md files unchanged", () => {

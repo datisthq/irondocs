@@ -34,6 +34,15 @@ describe("partitionCode", () => {
     expect(result.body).toBe("a + b")
   })
 
+  it("hoists an import-equals declaration", () => {
+    const result = partitionCode(
+      `import fs = require("node:fs")\nfs.readFileSync`,
+      project,
+    )
+    expect(result.imports).toEqual([`import fs = require("node:fs")`])
+    expect(result.body).toBe("fs.readFileSync")
+  })
+
   it("hoists a side-effect import", () => {
     const result = partitionCode(`import "x"\nrun()`, project)
     expect(result.imports).toHaveLength(1)

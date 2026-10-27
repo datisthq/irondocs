@@ -92,7 +92,7 @@ describe("renderTestModule", () => {
       "foo.md",
       { plugin: vitestPlugin },
     )
-    expect(out).toContain(`it("X", async () => { })`)
+    expect(out).toContain(`it("X", async () => {})`)
     expect(out).toContain(`import "side-effect"`)
   })
 

@@ -29,6 +29,7 @@ export function parseMarkdown(source: string): Block[] {
       if (name !== undefined) block.name = name
       if (fence.options.includes("skip")) block.skip = true
       if (fence.options.includes("only")) block.only = true
+      if (lang === "tsx") block.tsx = true
       blocks.push(block)
     }
   }

@@ -36,7 +36,6 @@ export function renderTestModule(
     .join("\n")
   file.addStatements(`describe(${JSON.stringify(filename)}, () => {\n${itStatements}\n})`)
 
-  file.formatText({ indentSize: 2, convertTabsToSpaces: true })
   return file.getFullText()
 }
 

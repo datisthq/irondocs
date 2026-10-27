@@ -53,7 +53,9 @@ describe("parseMarkdown", () => {
 
   it("accepts tsx with test token", () => {
     const md = "```tsx test\nconst x = <div />\n```"
-    expect(parseMarkdown(md)).toEqual([{ heading: "", code: "const x = <div />" }])
+    expect(parseMarkdown(md)).toEqual([
+      { heading: "", code: "const x = <div />", tsx: true },
+    ])
   })
 
   it("does not accept js with test token", () => {

@@ -56,6 +56,8 @@ assert add(1, 2) == 3
   order. `js`, `jsx`, `pycon` and untagged blocks never run
 - **Only top-level fences count.** A block inside a list item or a blockquote renders but is
   silently not collected
+- Irondocs erases TypeScript types itself; `tsx` JSX compiles to the automatic React runtime, so
+  `react/jsx-runtime` must resolve
 - TypeScript gets `describe`, `it` and `expect` injected; Python gets `pytest` (for
   `pytest.raises`) and pytest's assertion rewriting, so use plain `assert`
 - Top-level `await` works in both: the TypeScript body runs in an `async` test, a Python block

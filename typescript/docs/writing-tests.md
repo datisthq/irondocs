@@ -57,4 +57,6 @@ expect(sum(1, 2)).toBe(3)
 ## Supported languages
 
 Only `ts` and `tsx` fences are picked up. `js`/`jsx` blocks render but are
-not run — keep tests typed.
+not run — keep tests typed. Irondocs erases the types itself, so no TypeScript
+transform needs to cover `.md` files. JSX in a `tsx` block compiles to the automatic
+React runtime, so `react/jsx-runtime` must resolve from the docs folder.

@@ -3,6 +3,7 @@ import { partitionCode } from "../../actions/code/partition.ts"
 import { parseMarkdown } from "../../actions/markdown/parse.ts"
 import { createProject } from "../../actions/project/create.ts"
 import { renderTestModule } from "../../actions/test/render.ts"
+import { transpileTestModule } from "../../actions/test/transpile.ts"
 import type { Plugin } from "../../models/plugin.ts"
 
 const plugin: Plugin = {
@@ -25,7 +26,12 @@ export default function irondocs(): VitePlugin {
         ...partitionCode(block.code, project),
       }))
       return {
-        code: renderTestModule(enriched, filename, { plugin, project }),
+        code: transpileTestModule(
+          renderTestModule(enriched, filename, { plugin, project }),
+          {
+            tsx: blocks.some(block => block.tsx),
+          },
+        ),
         map: null,
       }
     },

@@ -9,4 +9,5 @@ export type Block = {
   name?: string
   skip?: boolean
   only?: boolean
+  tsx?: boolean
 }

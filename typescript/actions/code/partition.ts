@@ -1,4 +1,4 @@
-import type { Project } from "ts-morph"
+import { Node, type Project } from "ts-morph"
 import type { Partition } from "../../models/partition.ts"
 import { createProject } from "../project/create.ts"
 
@@ -11,7 +11,11 @@ export function partitionCode(code: string, project?: Project): Partition {
   const sourceFile = project.createSourceFile("__block.ts", code, {
     overwrite: true,
   })
-  const importNodes = sourceFile.getImportDeclarations()
+  const importNodes = sourceFile
+    .getStatements()
+    .filter(
+      node => Node.isImportDeclaration(node) || Node.isImportEqualsDeclaration(node),
+    )
   const imports = importNodes.map(node => node.getText())
   for (const node of importNodes) node.remove()
   return { imports, body: sourceFile.getFullText().trim() }
