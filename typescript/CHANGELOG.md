@@ -1,5 +1,15 @@
 # Changelog
 
+## [0.3.2](https://github.com/datisthq/irondocs/compare/v0.3.1...v0.3.2) (2026-10-27)
+
+
+### Bug Fixes
+
+* merge hoisted imports safely across blocks ([0a4ce4d](https://github.com/datisthq/irondocs/commit/0a4ce4df6f25dc458741e181c25f9e93dd0acd6e))
+* never name tests after YAML front matter ([6b6d361](https://github.com/datisthq/irondocs/commit/6b6d3615cc05a19e481234ea4f614ab4d29c31d4))
+* read fence options only from bare tokens ([74931f2](https://github.com/datisthq/irondocs/commit/74931f24a9a3973456320f8b5783bf270d720b9d))
+* run typed ts and tsx blocks ([161b545](https://github.com/datisthq/irondocs/commit/161b54589bde6fac6c4b0a4bf9bfc58f95c0f5e9))
+
 ## [0.3.1](https://github.com/datisthq/testdocs/compare/v0.3.0...v0.3.1) (2026-10-06)
 
 
