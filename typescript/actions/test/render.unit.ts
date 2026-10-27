@@ -231,4 +231,65 @@ describe("renderTestModule", () => {
     expect(out).toContain(`it.skip("X"`)
     expect(out).not.toContain(`it.only("X"`)
   })
+
+  it("merges overlapping named imports into one binding each", () => {
+    const out = renderTestModule(
+      [
+        { heading: "A", code: "", imports: [`import { a } from "./lib"`], body: "a" },
+        { heading: "B", code: "", imports: [`import {a, b} from "./lib"`], body: "b" },
+      ],
+      "foo.md",
+      { plugin: jestPlugin },
+    )
+    expect(out.match(/import \{ a \} from "\.\/lib"/g)).toHaveLength(1)
+    expect(out).toContain(`import { b } from "./lib"`)
+  })
+
+  it("throws when two blocks bind one name to different imports", () => {
+    const blocks = [
+      { heading: "A", code: "", imports: [`import { sqrt } from "a"`], body: "" },
+      { heading: "B", code: "", imports: [`import { sqrt } from "b"`], body: "" },
+    ]
+    expect(() => renderTestModule(blocks, "foo.md", { plugin: jestPlugin })).toThrow(
+      /foo\.md.*"sqrt".*"a".*"b"/,
+    )
+  })
+
+  it("guards an import that only skipped blocks use", () => {
+    const out = renderTestModule(
+      [
+        {
+          heading: "A",
+          code: "",
+          imports: [`import { x } from "pending"`],
+          body: "",
+          skip: true,
+        },
+        { heading: "B", code: "", imports: [], body: "" },
+      ],
+      "foo.md",
+      { plugin: jestPlugin },
+    )
+    expect(out).not.toContain(`from "pending"`)
+    expect(out).toContain(`await import("pending")`)
+  })
+
+  it("keeps an import static when a running block uses it too", () => {
+    const out = renderTestModule(
+      [
+        {
+          heading: "A",
+          code: "",
+          imports: [`import { x } from "lib"`],
+          body: "",
+          skip: true,
+        },
+        { heading: "B", code: "", imports: [`import { x } from "lib"`], body: "x" },
+      ],
+      "foo.md",
+      { plugin: jestPlugin },
+    )
+    expect(out).toContain(`import { x } from "lib"`)
+    expect(out).not.toContain(`await import("lib")`)
+  })
 })

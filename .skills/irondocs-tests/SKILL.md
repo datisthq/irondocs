@@ -85,6 +85,10 @@ Imports in any `test` block are hoisted and shared by every block in the same fi
 near the top. **Nothing else is shared**: each block is its own scope, and a variable defined in
 one block is undefined in the next. Repeat the setup, or fold the steps into one block.
 
+Hoisted imports load before any block runs: setup they depend on (a `sys.path` change) goes in
+`conftest.py` or the runner's setup files. One name bound to two different imports fails the
+file. Imports only `skip` or unfocused blocks use are best-effort, so a pending module is safe.
+
 Imports resolve as in a test module beside the `.md` file (TypeScript), or as any pytest module
 does (Python: install the package, or set `pythonpath = ["src"]`).
 

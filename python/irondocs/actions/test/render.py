@@ -3,6 +3,7 @@ import ast
 from ...models.block import Block
 from ...models.module import Doctest, DoctestModule
 from ...models.partition import Partition
+from ..code.hoist import hoist_imports
 
 
 def render_test_module(
@@ -13,10 +14,7 @@ def render_test_module(
     Imports are deduped across all blocks and shared; every block becomes one
     doctest named after its heading, its `name` option or the file's basename.
     """
-    seen: dict[str, ast.stmt] = {}
-    for _, partition in blocks:
-        for node in partition.imports:
-            seen.setdefault(ast.unparse(node), node)
+    imports, future_flags = hoist_imports(blocks, filename)
 
     fallback = filename.removesuffix(".md")
     names = assign_names([block for block, _ in blocks], fallback)
@@ -31,8 +29,9 @@ def render_test_module(
         for name, (block, partition) in zip(names, blocks, strict=True)
     ]
     return DoctestModule(
-        imports=ast.Module(body=list(seen.values()), type_ignores=[]),
+        imports=ast.Module(body=imports, type_ignores=[]),
         doctests=doctests,
+        future_flags=future_flags,
     )
 
 

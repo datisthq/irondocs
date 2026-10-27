@@ -48,6 +48,13 @@ Any top-level `import` in a runnable block is hoisted and shared across every
 test in the same `.md` file. Everything else a block defines stays local to it:
 each block runs in a fresh namespace.
 
+Hoisted imports run before any block, so a block's setup code (a `sys.path`
+change, say) cannot prepare them; put such setup in `conftest.py`. Two blocks may
+import the same name from the same module, but binding one name to two different
+imports fails collection. An import used only by `skip` blocks, or by blocks an
+`only` block leaves out, is guarded, so a module that doesn't exist yet cannot fail
+the tests that run. A `from __future__` import in any block applies to the whole file.
+
 ```python test
 import json
 ```

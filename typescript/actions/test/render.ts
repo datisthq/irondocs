@@ -2,6 +2,7 @@ import type { Project } from "ts-morph"
 import type { Block } from "../../models/block.ts"
 import type { Partition } from "../../models/partition.ts"
 import type { Plugin } from "../../models/plugin.ts"
+import { hoistImports } from "../code/hoist.ts"
 import { createProject } from "../project/create.ts"
 
 type ItKind = "it" | "it.skip" | "it.only"
@@ -21,13 +22,10 @@ export function renderTestModule(
   const project = options.project ?? createProject()
   const file = project.createSourceFile("__out.ts", "", { overwrite: true })
 
-  const seen = new Set<string>(
-    options.plugin.initialImport ? [options.plugin.initialImport] : [],
-  )
-  for (const block of blocks) {
-    for (const imp of block.imports) seen.add(imp)
+  if (options.plugin.initialImport) file.addStatements(options.plugin.initialImport)
+  for (const statement of hoistImports(blocks, filename, project)) {
+    file.addStatements(statement)
   }
-  for (const imp of seen) file.addStatements(imp)
 
   const fallback = filename.replace(/\.md$/, "")
   const names = assignNames(blocks, fallback)

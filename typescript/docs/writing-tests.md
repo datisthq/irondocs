@@ -46,6 +46,13 @@ Any `import` statements inside a runnable block are hoisted to the module top
 and shared across every test in the same `.md` file. Multi-line imports work
 because the parser uses a real TypeScript AST (ts-morph), not a regex.
 
+Hoisted imports load before any block runs, so a block's setup code cannot
+prepare them; put such setup in the runner's setup files. Two blocks may import
+the same name from the same module, but binding one name to two different imports
+fails the file. An import used only by `skip` blocks, or by blocks an `only` block
+leaves out, is loaded on a best-effort basis, so a module that doesn't exist yet
+cannot fail the tests that run.
+
 ````md
 ```ts test
 import { sum } from "./sum.ts"

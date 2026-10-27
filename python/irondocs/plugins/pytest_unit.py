@@ -80,6 +80,37 @@ class TestPytestPlugin:
         write(pytester, "# H\n\n```python\nassert False\n```\n")
         pytester.runpytest().assert_outcomes()
 
+    def test_ignores_a_failing_import_only_skipped_blocks_use(
+        self, pytester: pytest.Pytester
+    ):
+        md = "## A\n\n```python test skip\nimport not_released\n```\n\n## B\n\n```python test\nassert True\n```\n"
+        write(pytester, md)
+        pytester.runpytest().assert_outcomes(passed=1, skipped=1)
+
+    def test_shares_an_import_from_a_skipped_block(self, pytester: pytest.Pytester):
+        md = "## A\n\n```python test skip\nimport math\n```\n\n## B\n\n```python test\nassert math.pi > 3\n```\n"
+        write(pytester, md)
+        pytester.runpytest().assert_outcomes(passed=1, skipped=1)
+
+    def test_shares_an_import_with_a_focused_block(self, pytester: pytest.Pytester):
+        md = "## A\n\n```python test\nimport math\n```\n\n## B\n\n```python test only\nassert math.pi > 3\n```\n"
+        write(pytester, md)
+        pytester.runpytest().assert_outcomes(passed=1, skipped=1)
+
+    def test_fails_collection_when_two_blocks_bind_one_name_differently(
+        self, pytester: pytest.Pytester
+    ):
+        md = "## A\n\n```python test\nfrom math import sqrt\n```\n\n## B\n\n```python test\nfrom cmath import sqrt\n```\n"
+        write(pytester, md)
+        result = pytester.runpytest()
+        result.assert_outcomes(errors=1)
+        result.stdout.fnmatch_lines(["*sqrt*math*cmath*"])
+
+    def test_applies_a_future_import_from_any_block(self, pytester: pytest.Pytester):
+        md = '## A\n\n```python test\nimport os\n```\n\n## B\n\n```python test\nfrom __future__ import annotations\ndef f(x: Undefined): ...\nassert f.__annotations__ == {"x": "Undefined"}\n```\n'
+        write(pytester, md)
+        pytester.runpytest().assert_outcomes(passed=2)
+
 
 def write(pytester: pytest.Pytester, content: str):
     pytester.makeini(INI)

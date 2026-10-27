@@ -25,3 +25,4 @@ class DoctestModule:
 
     imports: ast.Module
     doctests: list[Doctest]
+    future_flags: int = 0

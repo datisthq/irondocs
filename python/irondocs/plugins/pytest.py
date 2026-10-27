@@ -58,12 +58,14 @@ class MarkdownFile(pytest.File):
         partitions = [partition_code(b.code, b.line, filename) for b in blocks]
         module = render_test_module(list(zip(blocks, partitions)), self.path.name)
 
-        imports = compile(module.imports, filename, "exec")
+        imports = compile(module.imports, filename, "exec", flags=module.future_flags)
         focused = any(d.only and not d.skip for d in module.doctests)
         for doctest in module.doctests:
             item = DoctestItem.from_parent(self, name=doctest.name)
             item.imports = imports
-            item.body = compile_body(doctest, source, filename, self.config)
+            item.body = compile_body(
+                doctest, source, filename, self.config, module.future_flags
+            )
             item.line = doctest.line
             if doctest.skip:
                 item.add_marker(pytest.mark.skip(reason="irondocs: skip"))
@@ -118,6 +120,9 @@ def match_files(file_path: Path, parent: pytest.Collector):
     )
 
 
-def compile_body(doctest: Doctest, source: str, filename: str, config: pytest.Config):
+def compile_body(
+    doctest: Doctest, source: str, filename: str, config: pytest.Config, flags: int
+):
     rewrite_asserts(doctest.body, source.encode(), filename, config)
-    return compile(doctest.body, filename, "exec", flags=ast.PyCF_ALLOW_TOP_LEVEL_AWAIT)
+    flags |= ast.PyCF_ALLOW_TOP_LEVEL_AWAIT
+    return compile(doctest.body, filename, "exec", flags=flags)
