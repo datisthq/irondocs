@@ -61,6 +61,13 @@ expect(sum(1, 2)).toBe(3)
 ```
 ````
 
+## What a block cannot hold
+
+Each block's body runs inside an `async` test function, so anything that must
+sit at a module's top level fails there: `export`, a nested `describe` or `it`,
+and `vi.mock` (vitest hoists it only from the top level). Put mocks in the
+runner's setup files, and keep one test per block.
+
 ## Supported languages
 
 Only `ts` and `tsx` fences are picked up. `js`/`jsx` blocks render but are

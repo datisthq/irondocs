@@ -64,7 +64,13 @@ assert json.loads("[1, 2]") == [1, 2]
 ```
 
 Imports resolve as in any pytest module. Import your installed package, or put
-its folder on the path with pytest's `pythonpath` option.
+its folder on the path with pytest's `pythonpath` option. A block is not part of
+a package, so relative imports (`from . import helper`) fail; import a module
+beside the doc by putting its folder on `pythonpath`.
+
+Blocks are not pytest functions: they cannot request fixtures, and `conftest.py`
+fixtures, autouse ones included, do not run for them. Do the setup in the block,
+or in `conftest.py` at import time.
 
 ## Async code
 

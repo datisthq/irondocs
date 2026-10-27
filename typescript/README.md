@@ -49,6 +49,8 @@ For jest, register the transformer:
 ```ts title="jest.config.ts"
 export default {
   transform: { "\\.md$": "irondocs/jest" },
+  moduleFileExtensions: ["js", "mjs", "cjs", "ts", "json", "md"],
+  extensionsToTreatAsEsm: [".md"],
   testMatch: ["**/*.test.ts", "**/docs/**/*.md"],
 }
 ```

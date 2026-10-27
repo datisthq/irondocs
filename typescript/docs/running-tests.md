@@ -14,19 +14,21 @@ test files in `pnpm test` output.
 
 ## What you'll see
 
-Each `.md` file appears as one test file. Inside it, every `test`-marked
-block becomes one `it()` named after the nearest heading. A docs file with
-two marked blocks under headings `Adds` and `Negs` reports as:
+Each `.md` file appears as one test file, its tests grouped under a
+`describe` named after the file. Every `test`-marked block becomes one `it()`
+named after the nearest heading. A docs file with two marked blocks under
+headings `Adds` and `Negs` reports as:
 
 ```
 ✓ docs/sum.md (2)
-  ✓ Adds
-  ✓ Negs
+  ✓ sum.md (2)
+    ✓ Adds
+    ✓ Negs
 ```
 
-Files with no marked blocks transform into an empty module (`export {}`) and
-report as zero tests — no errors, no noise. Safe to leave the `.md` glob
-broad.
+A matched file with no marked blocks is an empty module, and both vitest and
+jest fail a test file without tests. Keep `test.include` / `testMatch` to the
+files that hold `test` blocks.
 
 ## Filtering
 
@@ -43,10 +45,10 @@ To narrow further than the runner's filtering, edit the fence itself with
 
 ## Debugging a failing doctest
 
-When a doctest fails, the runner reports the synthetic test module name
-(`__out.ts`) and the line within the _generated_ code, not the line in your
-`.md`. Source-map generation back to the original `.md` line numbers is on
-the roadmap; until then, the typical workflow is:
+When a doctest fails, the runner names your `.md` file but reports the line
+within the _generated_ test module, so the line number and the code frame it
+prints point at unrelated markdown. Source-map generation back to the
+original `.md` lines is on the roadmap; until then, the typical workflow is:
 
 1. Look at the test name in the failure (it's the heading or `name="..."`).
 2. Open the `.md`, find that heading.

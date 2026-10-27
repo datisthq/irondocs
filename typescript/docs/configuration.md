@@ -30,19 +30,24 @@ export default defineConfig({
 })
 ```
 
-The exact include glob is up to you — narrow to `docs/**/*.md` if you only
-want runnable docs in the docs folder, or expand to `**/*.md` if you want
-README and other top-level markdown discovered too.
+The exact include glob is up to you, but list only `.md` files that hold
+`test` blocks: vitest fails a file with no tests ("No test suite found"), so a
+broad `**/*.md` breaks the run on the first README without one.
 
 ## jest
 
-`irondocs/jest` is a jest transformer. Register it under `transform` and
-extend `testMatch` to include your `.md` files. Generated tests rely on jest's
-default globals (`describe`/`it`/`expect`), so no extra import is injected.
+`irondocs/jest` is a jest transformer. Register it under `transform`, add `md`
+to `moduleFileExtensions` (jest ignores any file whose extension isn't listed
+there, whatever `testMatch` says) and extend `testMatch` to include your `.md`
+files. Generated tests rely on jest's default globals (`describe`/`it`/`expect`),
+so no extra import is injected. As with vitest, every matched `.md` needs at
+least one `test` block, or jest fails it.
 
 ```ts title="jest.config.ts"
 export default {
   transform: { "\\.md$": "irondocs/jest" },
+  moduleFileExtensions: ["js", "mjs", "cjs", "ts", "json", "md"],
+  extensionsToTreatAsEsm: [".md"],
   testMatch: ["**/*.test.ts", "**/docs/**/*.md"],
 }
 ```
@@ -53,7 +58,7 @@ runnable blocks — irondocs's import hoisting will lift it to the module top.
 
 ### ESM jest
 
-Irondocs is published as ESM. Default-CJS jest setups need ESM mode to load
-it — typically via `--experimental-vm-modules` and matching
-`extensionsToTreatAsEsm` config. Refer to the jest docs for the full
-ESM-mode setup; it isn't irondocs-specific.
+A block's `import` statements stay ES module syntax, so a doc with imports
+needs jest's ESM mode: `extensionsToTreatAsEsm: [".md"]` as above, and jest run
+with `NODE_OPTIONS=--experimental-vm-modules`. A doc whose blocks import nothing
+runs without it.

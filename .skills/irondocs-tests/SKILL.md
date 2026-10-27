@@ -11,11 +11,11 @@ contract, so the same markdown habits work in TypeScript and Python.
 
 ## Setup
 
-| runner            | install                        | wire it                                                                   |
-| ----------------- | ------------------------------ | ------------------------------------------------------------------------- |
-| vitest, vite-plus | `npm install -D irondocs`      | `plugins: [irondocs()]` from `irondocs/vite`; add `.md` to `test.include` |
-| jest              | `npm install -D irondocs`      | `transform: { "\\.md$": "irondocs/jest" }`; add `.md` to `testMatch`      |
-| pytest            | `pip install irondocs` (3.12+) | `irondocs_files = ["docs/*.md"]` under `[tool.pytest.ini_options]`        |
+| runner            | install                        | wire it                                                                                              |
+| ----------------- | ------------------------------ | ---------------------------------------------------------------------------------------------------- |
+| vitest, vite-plus | `npm install -D irondocs`      | `plugins: [irondocs()]` from `irondocs/vite`; add `.md` to `test.include`                            |
+| jest              | `npm install -D irondocs`      | `transform: { "\\.md$": "irondocs/jest" }`; add `md` to `moduleFileExtensions`, `.md` to `testMatch` |
+| pytest            | `pip install irondocs` (3.12+) | `irondocs_files = ["docs/*.md"]` under `[tool.pytest.ini_options]`                                   |
 
 ```ts title="vite.config.ts"
 import irondocs from "irondocs/vite"
@@ -101,13 +101,17 @@ does (Python: install the package, or set `pythonpath = ["src"]`).
 | by name   | `vitest -t "Adds"`   | `jest -t "Adds"`    | `pytest -k Adds`             |
 | one block | `only` on the fence  | `only` on the fence | `pytest "docs/sum.md::Adds"` |
 
-- A `.md` with no `test` blocks yields zero tests, so a broad glob is safe
-- **pytest** points a failure at the `.md` line and shows the markdown around it; a block that
-  doesn't parse fails collection with a `SyntaxError` at its line
-- **vitest and jest** report lines of the generated module (`__out.ts`), not the `.md`. Find the
-  block by the test name: the heading or `name="..."`
+- A `.md` with no `test` blocks yields zero tests: fine for pytest, but vitest and jest fail such
+  a file, so keep their globs to docs that hold `test` blocks
+- **pytest** points a failure at the `.md` line and shows the block, from its fence down; a block
+  that doesn't parse fails collection with a `SyntaxError` at its line
+- **vitest and jest** name the `.md` file but print lines of the generated module, so the code
+  frame shows unrelated markdown. Find the block by the test name: the heading or `name="..."`
 - jest with `injectGlobals: false`: add `import { describe, it, expect } from "@jest/globals"` to
-  one block, and it is hoisted for all. Irondocs is ESM, so CJS jest needs its ESM mode
+  one block, and it is hoisted for all. A block with an `import` needs jest's ESM mode:
+  `extensionsToTreatAsEsm: [".md"]` and `NODE_OPTIONS=--experimental-vm-modules`
+- A block body runs inside a test: no `export`, nested `describe`/`it` or `vi.mock` in it. pytest
+  fixtures, autouse ones included, never reach a block
 
 ## References
 
