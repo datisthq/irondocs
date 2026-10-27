@@ -111,6 +111,40 @@ class TestPytestPlugin:
         write(pytester, md)
         pytester.runpytest().assert_outcomes(passed=2)
 
+    def test_shows_only_the_failing_block_in_a_failure(self, pytester: pytest.Pytester):
+        md = "# Intro line\n\nProse.\n\n```python test\nx = 1\n```\n\n## Fails\n\n```python test\ny = 1\nassert y == 2\n```\n"
+        write(pytester, md)
+        result = pytester.runpytest()
+        result.assert_outcomes(passed=1, failed=1)
+        result.stdout.fnmatch_lines(
+            ["*```python test", "*y = 1", ">*assert y == 2", "*docs/sum.md:13: Assert*"]
+        )
+        result.stdout.no_fnmatch_line("*Intro line*")
+
+    def test_reports_the_line_of_a_function_failing_inside_a_block(
+        self, pytester: pytest.Pytester
+    ):
+        md = "# H\n\n```python test\ndef f():\n    assert False\n\nf()\n```\n"
+        write(pytester, md)
+        result = pytester.runpytest()
+        result.stdout.fnmatch_lines(["*docs/sum.md:5: AssertionError*"])
+
+    def test_reports_a_compile_time_syntax_error_at_its_line(
+        self, pytester: pytest.Pytester
+    ):
+        write(pytester, "# H\n\nText.\n\n```python test\nx = 1\nreturn x\n```\n")
+        result = pytester.runpytest()
+        result.assert_outcomes(errors=1)
+        result.stdout.fnmatch_lines(["*docs/sum.md*line 7*"])
+
+    def test_shows_only_the_import_in_an_import_failure(self, pytester: pytest.Pytester):
+        md = "# Intro line\n\nProse.\n\n## Imports\n\n```python test\nimport not_installed\n```\n"
+        write(pytester, md)
+        result = pytester.runpytest()
+        result.assert_outcomes(failed=1)
+        result.stdout.fnmatch_lines([">*import not_installed", "*docs/sum.md:8: Module*"])
+        result.stdout.no_fnmatch_line("*Intro line*")
+
 
 def write(pytester: pytest.Pytester, content: str):
     pytester.makeini(INI)

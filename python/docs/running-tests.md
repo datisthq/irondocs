@@ -44,7 +44,7 @@ doctest.
 ## Debugging a failing doctest
 
 Irondocs compiles each block against the lines of its `.md` file, so a failure
-points at the very line that failed and shows the surrounding markdown:
+points at the very line that failed and shows its block, from the fence down:
 
 ````
     ```python test

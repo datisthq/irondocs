@@ -58,7 +58,10 @@ class MarkdownFile(pytest.File):
         partitions = [partition_code(b.code, b.line, filename) for b in blocks]
         module = render_test_module(list(zip(blocks, partitions)), self.path.name)
 
-        imports = compile(module.imports, filename, "exec", flags=module.future_flags)
+        first_line = min((node.lineno - 1 for node in module.imports.body), default=1)
+        imports = compile_shifted(
+            module.imports, filename, module.future_flags, first_line
+        )
         focused = any(d.only and not d.skip for d in module.doctests)
         for doctest in module.doctests:
             item = DoctestItem.from_parent(self, name=doctest.name)
@@ -125,4 +128,28 @@ def compile_body(
 ):
     rewrite_asserts(doctest.body, source.encode(), filename, config)
     flags |= ast.PyCF_ALLOW_TOP_LEVEL_AWAIT
-    return compile(doctest.body, filename, "exec", flags=flags)
+    return compile_shifted(doctest.body, filename, flags, doctest.line - 1)
+
+
+# pytest prints a failing frame's source from `co_firstlineno`, which is 1 for a module;
+# compiling relative to the fence line and shifting back keeps the excerpt to the block
+def compile_shifted(tree: ast.Module, filename: str, flags: int, fence_line: int):
+    offset = fence_line - 1
+    ast.increment_lineno(tree, -offset)
+    try:
+        code = compile(tree, filename, "exec", flags=flags)
+    except SyntaxError as error:
+        if error.lineno is not None:
+            error.lineno += offset
+        if error.end_lineno is not None:
+            error.end_lineno += offset
+        raise
+    return shift_lines(code, offset)
+
+
+def shift_lines(code: CodeType, offset: int) -> CodeType:
+    consts = tuple(
+        shift_lines(const, offset) if isinstance(const, CodeType) else const
+        for const in code.co_consts
+    )
+    return code.replace(co_firstlineno=code.co_firstlineno + offset, co_consts=consts)
