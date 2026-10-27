@@ -34,7 +34,8 @@ irondocs_files = ["docs/*.md"]
 ```
 
 pytest loads the plugin on install, but collects nothing until `irondocs_files` matches, and only
-from folders it walks: the docs folder must be in `testpaths` or on the command line.
+from folders it walks: the docs folder must be in `testpaths` or on the command line. `*` stays in
+one folder; use `docs/**/*.md` for nested docs.
 
 ## A test block
 

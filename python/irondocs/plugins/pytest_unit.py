@@ -145,6 +145,37 @@ class TestPytestPlugin:
         result.stdout.fnmatch_lines([">*import not_installed", "*docs/sum.md:8: Module*"])
         result.stdout.no_fnmatch_line("*Intro line*")
 
+    @pytest.mark.parametrize(
+        ("pattern", "collected"),
+        [
+            ("docs/*.md", ["docs/top.md"]),
+            ("docs/**/*.md", ["docs/sub/deep/low.md", "docs/sub/mid.md", "docs/top.md"]),
+            ("docs/**", ["docs/sub/deep/low.md", "docs/sub/mid.md", "docs/top.md"]),
+            ("./docs/sub/*.md", ["docs/sub/mid.md"]),
+            ("docs/s?b/*.md", ["docs/sub/mid.md"]),
+            ("docs/[r-t]ub/*.md", ["docs/sub/mid.md"]),
+            ("docs/[!s]*.md", ["docs/top.md"]),
+            ("mid.md", ["docs/sub/mid.md"]),
+        ],
+    )
+    def test_matches_irondocs_files_as_path_globs(
+        self, pytester: pytest.Pytester, pattern: str, collected: list[str]
+    ):
+        pytester.makeini(f"[pytest]\nirondocs_files = {pattern}\n")
+        for path in ["docs/top.md", "docs/sub/mid.md", "docs/sub/deep/low.md"]:
+            (pytester.path / path).parent.mkdir(parents=True, exist_ok=True)
+            (pytester.path / path).write_text("```python test\nassert True\n```\n")
+        result = pytester.runpytest("--collect-only", "-q")
+        ids = sorted(line.split("::")[0] for line in result.outlines if "::" in line)
+        assert ids == collected
+
+    def test_matches_an_absolute_irondocs_files_pattern(self, pytester: pytest.Pytester):
+        docs = pytester.path / "docs"
+        pytester.makeini(f"[pytest]\nirondocs_files = {docs.as_posix()}/*.md\n")
+        pytester.mkdir("docs")
+        (docs / "top.md").write_text("```python test\nassert True\n```\n")
+        pytester.runpytest().assert_outcomes(passed=1)
+
 
 def write(pytester: pytest.Pytester, content: str):
     pytester.makeini(INI)

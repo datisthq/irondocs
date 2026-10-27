@@ -1,8 +1,8 @@
 import ast
 import asyncio
 import inspect
+import re
 from collections.abc import Iterator
-from fnmatch import fnmatch
 from pathlib import Path
 from types import CodeType
 from typing import TYPE_CHECKING
@@ -113,14 +113,56 @@ class DoctestItem(pytest.Item):
 def match_files(file_path: Path, parent: pytest.Collector):
     patterns: list[str] = parent.config.getini("irondocs_files")
     rootpath = parent.config.rootpath
-    if not file_path.is_relative_to(rootpath):
-        return False
-    relative = file_path.relative_to(rootpath).as_posix()
-    return any(
-        fnmatch(relative, pattern)
-        or ("/" not in pattern and fnmatch(file_path.name, pattern))
-        for pattern in patterns
+    relative = (
+        file_path.relative_to(rootpath).as_posix()
+        if file_path.is_relative_to(rootpath)
+        else None
     )
+    for pattern in patterns:
+        if "/" not in pattern:
+            if translate_glob(pattern).fullmatch(file_path.name):
+                return True
+        elif Path(pattern).is_absolute():
+            if translate_glob(pattern).fullmatch(file_path.as_posix()):
+                return True
+        elif relative is not None:
+            if translate_glob(pattern.removeprefix("./")).fullmatch(relative):
+                return True
+    return False
+
+
+def translate_glob(pattern: str) -> re.Pattern[str]:
+    parts: list[str] = []
+    segments = pattern.split("/")
+    for index, segment in enumerate(segments):
+        last = index == len(segments) - 1
+        if segment == "**":
+            parts.append(".*" if last else "(?:[^/]+/)*")
+            continue
+        parts.append(translate_segment(segment) + ("" if last else "/"))
+    return re.compile("".join(parts))
+
+
+def translate_segment(segment: str) -> str:
+    out: list[str] = []
+    index = 0
+    while index < len(segment):
+        char = segment[index]
+        close = segment.find("]", index + 2) if char == "[" else -1
+        if char == "*":
+            out.append("[^/]*")
+        elif char == "?":
+            out.append("[^/]")
+        elif close != -1:
+            body = segment[index + 1 : close]
+            negate = body.startswith("!")
+            body = body.removeprefix("!").replace("\\", "\\\\").replace("^", "\\^")
+            out.append(f"[{'^' if negate else ''}{body}]")
+            index = close
+        else:
+            out.append(re.escape(char))
+        index += 1
+    return "".join(out)
 
 
 def compile_body(

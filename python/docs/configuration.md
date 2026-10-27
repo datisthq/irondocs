@@ -15,8 +15,10 @@ one ini option.
 ## irondocs_files
 
 Glob patterns of the markdown files to collect, matched against each file's
-path relative to the rootdir. A pattern without a `/` also matches the file's
-basename anywhere. The default is empty: nothing is collected until you opt in.
+path relative to the rootdir. `*` and `?` stay within one folder, `**` spans any
+number of folders (none included), and a leading `./` or an absolute path also
+works. A pattern without a `/` matches the file's basename anywhere. The default
+is empty: nothing is collected until you opt in.
 
 ```toml title="pyproject.toml"
 [tool.pytest.ini_options]
