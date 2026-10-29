@@ -36,6 +36,13 @@
           "section": "Documentation",
           "hidden": true
         }
+      ],
+      "extra-files": [
+        {
+          "type": "toml",
+          "path": "uv.lock",
+          "jsonpath": "$.package[?(@.name.value === 'irondocs')].version"
+        }
       ]
     }
   }
