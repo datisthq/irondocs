@@ -43,7 +43,7 @@ export default defineConfig({
       article: {
         title: "Contributing",
         description:
-          "How to set up irondocs locally, propose changes, and ship a release.",
+          "How to report bugs and share ideas, and how team members work on irondocs.",
         icon: "heart-handshake",
         order: -2,
         path: "/python/contributing/",
@@ -74,7 +74,7 @@ export default defineConfig({
       article: {
         title: "Contributing",
         description:
-          "How to set up irondocs locally, propose changes, and ship a release.",
+          "How to report bugs and share ideas, and how team members work on irondocs.",
         icon: "heart-handshake",
         order: -2,
         path: "/typescript/contributing/",
