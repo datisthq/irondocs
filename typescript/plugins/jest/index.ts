@@ -1,3 +1,4 @@
+import { basename } from "node:path"
 import { partitionCode } from "../../actions/code/partition.ts"
 import { parseMarkdown } from "../../actions/markdown/parse.ts"
 import { createProject } from "../../actions/project/create.ts"
@@ -27,7 +28,7 @@ const transformer: JestTransformer = {
       return { code: sourceText }
     }
     const blocks = parseMarkdown(sourceText, { mdx: sourcePath.endsWith(".mdx") })
-    const filename = sourcePath.split("/").pop() ?? sourcePath
+    const filename = basename(sourcePath)
     const enriched = blocks.map(block => ({
       ...block,
       ...partitionCode(block.code, project),

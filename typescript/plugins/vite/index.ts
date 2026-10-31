@@ -1,5 +1,5 @@
 import { readFileSync } from "node:fs"
-import { isAbsolute, matchesGlob, relative, resolve } from "node:path"
+import { basename, isAbsolute, matchesGlob, relative, resolve } from "node:path"
 import type { Plugin as VitePlugin } from "vite"
 import { partitionCode } from "../../actions/code/partition.ts"
 import { parseMarkdown } from "../../actions/markdown/parse.ts"
@@ -75,7 +75,7 @@ function renderDocument(
   project: ReturnType<typeof createProject>,
 ) {
   const blocks = parseMarkdown(source, { mdx: path.endsWith(".mdx") })
-  const filename = path.split("/").pop() ?? path
+  const filename = basename(path)
   const enriched = blocks.map(block => ({
     ...block,
     ...partitionCode(block.code, project),
