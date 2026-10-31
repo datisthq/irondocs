@@ -130,11 +130,6 @@ describe("parseMarkdown", () => {
     expect(parseMarkdown(md)).toEqual([{ heading: "", code: "a" }])
   })
 
-  it("ignores blocks nested in lists", () => {
-    const md = "- item\n\n  ```ts test\n  x\n  ```\n"
-    expect(parseMarkdown(md)).toEqual([])
-  })
-
   it.each([
     ["## The `sum` **function**", "The sum function"],
     ["## Tom &amp; Jerry", "Tom & Jerry"],
@@ -151,5 +146,44 @@ describe("parseMarkdown", () => {
   it("keeps the first heading of a file that starts with a BOM", () => {
     const md = "\uFEFF# Title\n\n```ts test\na\n```\n"
     expect(parseMarkdown(md)).toEqual([{ heading: "Title", code: "a" }])
+  })
+
+  it("extracts blocks nested in a list item and a blockquote", () => {
+    const md = "## H\n\n- step\n\n  ```ts test\n  a\n  ```\n\n> ```ts test\n> b\n> ```\n"
+    expect(parseMarkdown(md)).toEqual([
+      { heading: "H", code: "a" },
+      { heading: "H", code: "b" },
+    ])
+  })
+
+  describe("mdx", () => {
+    it("extracts a block nested in indented JSX elements", () => {
+      const mdx = [
+        'import { Tab, Tabs } from "./tabs"',
+        "",
+        "## In tabs",
+        "",
+        "<Tabs>",
+        "  <Tab>",
+        "    ```ts test",
+        "    expect(1).toBe(1)",
+        "    ```",
+        "  </Tab>",
+        "</Tabs>",
+      ].join("\n")
+      expect(parseMarkdown(mdx, { mdx: true })).toEqual([
+        { heading: "In tabs", code: "expect(1).toBe(1)" },
+      ])
+    })
+
+    it("drops an expression from the heading", () => {
+      const mdx = "## Sum {props.x}\n\n```ts test\na\n```\n"
+      expect(parseMarkdown(mdx, { mdx: true })).toEqual([{ heading: "Sum", code: "a" }])
+    })
+
+    it("throws on syntax markdown accepts but MDX does not", () => {
+      expect(() => parseMarkdown("<!-- note -->\n", { mdx: true })).toThrow()
+      expect(parseMarkdown("<!-- note -->\n")).toEqual([])
+    })
   })
 })
