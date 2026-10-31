@@ -1,5 +1,12 @@
 # Changelog
 
+## [0.3.0](https://github.com/datisthq/irondocs/compare/python-v0.2.0...python-v0.3.0) (2026-10-31)
+
+
+### Features
+
+* run tests from .mdx and .svx docs ([#15](https://github.com/datisthq/irondocs/issues/15)) ([0861bd8](https://github.com/datisthq/irondocs/commit/0861bd8e383f7e349fa0d9fb07b1070e20273a04))
+
 ## [0.2.0](https://github.com/datisthq/irondocs/compare/python-v0.1.0...python-v0.2.0) (2026-10-31)
 
 
