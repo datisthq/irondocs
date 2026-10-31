@@ -8,8 +8,8 @@ description: Mark code blocks as runnable tests and how irondocs picks them up.
 
 # Writing tests
 
-Mark a code block in any `.md` file as a runnable test by adding `test` to its
-fence info string:
+Mark a code block in any `.md`, `.mdx` or `.svx` file as a runnable test by
+adding `test` to its fence info string:
 
 ````md
 ```python test
@@ -19,6 +19,15 @@ assert 1 + 1 == 2
 
 Untagged `python` blocks render normally and are not run, so you can freely
 mix illustrative snippets and runnable assertions in the same article.
+
+## Where blocks sit
+
+A `test` block counts wherever it sits: at the top level, in a list item, in a
+blockquote or, in MDX, inside a JSX element such as `<Tabs>`. An `.mdx` file is
+read as MDX, which is stricter than markdown: an HTML comment or a stray `{` is a
+parse error that fails the file (write comments as `{/* … */}`), and an
+`{expression}` in a heading is left out of the test name. An `.svx` file is read
+as markdown.
 
 ## Test names
 

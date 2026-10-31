@@ -42,8 +42,9 @@ The root `pnpm check` and `pnpm test:unit` chain these after the TypeScript ones
 
 - Python 3.12+ syntax; no `Any`, no casts and no `# ty: ignore` without permission
 - textlane's mdast nodes are `TypedDict` unions: narrow them with `match` on `{"type": ...}` or
-  a direct `node["type"] == ...`; `ty` does not narrow through `in`, a tuple or an aliased
-  `kind` variable, and reports the key as missing
+  a direct `node["type"] == ...`; `ty` does not narrow through `in`, a tuple, an aliased
+  `kind` variable or a captured key (`case {"children": c}` types `c` as `object`), so list
+  the `type` literals in the pattern instead
 - A name imported from pytest's private `_pytest` modules must exist at the `pytest` floor in
   `[project] dependencies`, or sit under `if TYPE_CHECKING:`: the plugin loads on every pytest
   run, so a missing name crashes even `pytest --version`. The `lowest` job in `test.yaml` runs
@@ -59,7 +60,7 @@ copy:
 | TypeScript                            | Python                                                   |
 | ------------------------------------- | -------------------------------------------------------- |
 | fence `ts` / `tsx`                    | fence `python` / `py`                                    |
-| textlane mdast, top-level `code`      | textlane mdast, top-level `code`, narrowed by `match`    |
+| textlane mdast, `code` at any depth   | textlane mdast, `code` at any depth, narrowed by `match` |
 | ts-morph import partition             | `ast` partition, numbered by the block's `.md` line      |
 | `describe` / `it` / `expect` injected | `pytest` injected; plain `assert`, rewritten by pytest   |
 | `it.skip` / `it.only`                 | `skip` marker; `only` skips the file's other blocks      |

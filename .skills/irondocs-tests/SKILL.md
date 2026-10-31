@@ -5,7 +5,7 @@ description: Use when writing, wiring or debugging markdown code blocks that run
 
 # Testing docs with Irondocs
 
-Irondocs turns fenced code blocks in `.md` files into tests for vitest, vite-plus, jest or
+Irondocs turns fenced code blocks in `.md`, `.mdx` and `.svx` files into tests for vitest, vite-plus, jest or
 pytest. A block tagged `test` runs; an untagged one only renders. Both packages share one fence
 contract, so the same markdown habits work in TypeScript and Python.
 
@@ -55,8 +55,11 @@ assert add(1, 2) == 3
 
 - The language comes first: `ts` or `tsx`; `python` or `py`. Then `test`, then options in any
   order. `js`, `jsx`, `pycon` and untagged blocks never run
-- **Only top-level fences count.** A block inside a list item or a blockquote renders but is
-  silently not collected
+- A block counts wherever it sits: top level, a list item, a blockquote or an MDX JSX element
+- `.mdx` is read as MDX: `<!-- -->` or a stray `{` fails the whole file (use `{/* */}`), and a
+  heading's `{expression}` is left out of the test name. `.svx` is read as markdown
+- The vite plugin coexists with `@mdx-js/rollup` and the Svelte plugin: docs matched by
+  `test.include` run as tests, an `.mdx` page imported by code still renders as a component
 - Irondocs erases TypeScript types itself; `tsx` JSX compiles to the automatic React runtime, so
   `react/jsx-runtime` must resolve
 - TypeScript gets `describe`, `it` and `expect` injected; Python gets `pytest` (for

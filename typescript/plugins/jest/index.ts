@@ -1,3 +1,4 @@
+import { basename } from "node:path"
 import { partitionCode } from "../../actions/code/partition.ts"
 import { parseMarkdown } from "../../actions/markdown/parse.ts"
 import { createProject } from "../../actions/project/create.ts"
@@ -15,15 +16,19 @@ const plugin: Plugin = {
 
 const project = createProject()
 
+const EXTENSIONS = [".md", ".mdx", ".svx"]
+
 /**
- * Jest transformer that turns runnable code blocks in `.md` files into
- * jest tests. Wire into your jest config under `transform`.
+ * Jest transformer that turns runnable code blocks in `.md`, `.mdx` and `.svx`
+ * files into jest tests. Wire into your jest config under `transform`.
  */
 const transformer: JestTransformer = {
   process(sourceText, sourcePath) {
-    if (!sourcePath.endsWith(".md")) return { code: sourceText }
-    const blocks = parseMarkdown(sourceText)
-    const filename = sourcePath.split("/").pop() ?? sourcePath
+    if (!EXTENSIONS.some(extension => sourcePath.endsWith(extension))) {
+      return { code: sourceText }
+    }
+    const blocks = parseMarkdown(sourceText, { mdx: sourcePath.endsWith(".mdx") })
+    const filename = basename(sourcePath)
     const enriched = blocks.map(block => ({
       ...block,
       ...partitionCode(block.code, project),

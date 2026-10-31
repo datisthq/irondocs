@@ -14,7 +14,7 @@ one ini option.
 
 ## irondocs_files
 
-Glob patterns of the markdown files to collect, matched against each file's
+Glob patterns of the `.md`, `.mdx` and `.svx` files to collect, matched against each file's
 path relative to the rootdir. `*` and `?` stay within one folder, `**` spans any
 number of folders (none included), and a leading `./` or an absolute path also
 works. A pattern without a `/` matches the file's basename anywhere. The default
@@ -27,8 +27,8 @@ irondocs_files = ["README.md", "docs/*.md"]
 ```
 
 pytest only offers irondocs the files it walks, so the folders that hold your
-docs must be in `testpaths` or on the command line. A `.md` file named on the
-command line is always collected.
+docs must be in `testpaths` or on the command line. A `.md`, `.mdx` or `.svx`
+file named on the command line is always collected.
 
 ## Imports
 

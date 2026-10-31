@@ -1,4 +1,5 @@
 import pytest
+from textlane import TextlaneError
 
 from ...models.block import Block
 from .parse import parse_markdown
@@ -57,9 +58,12 @@ class TestParseMarkdown:
         md = "```ts test\nconst x = 1\n```"
         assert parse_markdown(md) == []
 
-    def test_ignores_blocks_nested_in_lists(self):
-        md = "- item\n\n  ```python test\n  x = 1\n  ```\n"
-        assert parse_markdown(md) == []
+    def test_extracts_blocks_nested_in_a_list_item_and_a_blockquote(self):
+        md = "## H\n\n- step\n\n  ```python test\n  a\n  ```\n\n> ```python test\n> b\n> ```\n"
+        assert parse_markdown(md) == [
+            Block(heading="H", code="a", line=6),
+            Block(heading="H", code="b", line=10),
+        ]
 
     def test_reads_heading_text_without_markup(self):
         md = "## The `sum` **function**\n\n```python test\nx\n```\n"
@@ -144,3 +148,34 @@ class TestParseMarkdown:
     def test_keeps_the_first_heading_of_a_file_that_starts_with_a_bom(self):
         md = "\ufeff# Title\n\n```python test\na\n```\n"
         assert parse_markdown(md) == [Block(heading="Title", code="a", line=4)]
+
+
+class TestParseMdx:
+    def test_extracts_a_block_nested_in_indented_jsx_elements(self):
+        mdx = "\n".join(
+            [
+                'import { Tab, Tabs } from "./tabs"',
+                "",
+                "## In tabs",
+                "",
+                "<Tabs>",
+                "  <Tab>",
+                "    ```python test",
+                "    assert 1",
+                "    ```",
+                "  </Tab>",
+                "</Tabs>",
+            ]
+        )
+        assert parse_markdown(mdx, mdx=True) == [
+            Block(heading="In tabs", code="assert 1", line=8)
+        ]
+
+    def test_drops_an_expression_from_the_heading(self):
+        mdx = "## Sum {props.x}\n\n```python test\na\n```\n"
+        assert parse_markdown(mdx, mdx=True)[0].heading == "Sum"
+
+    def test_raises_on_syntax_markdown_accepts_but_mdx_does_not(self):
+        with pytest.raises(TextlaneError):
+            parse_markdown("<!-- note -->\n", mdx=True)
+        assert parse_markdown("<!-- note -->\n") == []

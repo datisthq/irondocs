@@ -10,11 +10,14 @@ from typing import TYPE_CHECKING
 import pytest
 from _pytest._code.code import ExceptionInfo, TerminalRepr
 from _pytest.assertion.rewrite import rewrite_asserts
+from textlane import TextlaneError
 
 from ..actions.code.partition import partition_code
 from ..actions.markdown.parse import parse_markdown
 from ..actions.test.render import render_test_module
 from ..models.module import Doctest
+
+SUFFIXES = {".md", ".mdx", ".svx"}
 
 # pytest < 8.3 has no public `TracebackStyle`, and the plugin loads on every pytest run
 if TYPE_CHECKING:
@@ -36,10 +39,10 @@ def pytest_addoption(parser: pytest.Parser):
 
 def pytest_collect_file(file_path: Path, parent: pytest.Collector):
     """
-    Collect a markdown file when it matches `irondocs_files` or was named on the
-    command line.
+    Collect a `.md`, `.mdx` or `.svx` file when it matches `irondocs_files` or was
+    named on the command line.
     """
-    if file_path.suffix != ".md":
+    if file_path.suffix not in SUFFIXES:
         return None
     if not parent.session.isinitpath(file_path) and not match_files(file_path, parent):
         return None
@@ -54,7 +57,10 @@ class MarkdownFile(pytest.File):
     def collect(self) -> Iterator[pytest.Item]:
         source = self.path.read_text(encoding="utf-8")
         filename = str(self.path)
-        blocks = parse_markdown(source)
+        try:
+            blocks = parse_markdown(source, mdx=self.path.suffix == ".mdx")
+        except TextlaneError as error:
+            raise self.CollectError(f"{self.path.name}: {error}") from error
         partitions = [partition_code(b.code, b.line, filename) for b in blocks]
         module = render_test_module(list(zip(blocks, partitions)), self.path.name)
 

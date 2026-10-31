@@ -32,6 +32,30 @@ class TestPytestPlugin:
         result.assert_outcomes(passed=1)
         result.stdout.fnmatch_lines(["*README.md::README PASSED*"])
 
+    def test_collects_mdx_and_svx_files(self, pytester: pytest.Pytester):
+        pytester.makeini("[pytest]\nirondocs_files = docs/*\n")
+        docs = pytester.mkdir("docs")
+        (docs / "tabs.mdx").write_text(
+            "## Tabs\n\n<Tab>\n  ```python test\n  assert True\n  ```\n</Tab>\n"
+        )
+        (docs / "note.svx").write_text(
+            "<script>\n  let x = 1\n</script>\n\n## Note\n\n```python test\nassert True\n```\n"
+        )
+        result = pytester.runpytest("-v")
+        result.assert_outcomes(passed=2)
+        result.stdout.fnmatch_lines(
+            ["*docs/note.svx::Note PASSED*", "*docs/tabs.mdx::Tabs PASSED*"]
+        )
+
+    def test_reports_invalid_mdx_as_a_collection_error(self, pytester: pytest.Pytester):
+        pytester.makeini("[pytest]\nirondocs_files = docs/*.mdx\n")
+        docs = pytester.mkdir("docs")
+        (docs / "bad.mdx").write_text("<!-- note -->\n")
+        result = pytester.runpytest()
+        result.assert_outcomes(errors=1)
+        result.stdout.fnmatch_lines(["*bad.mdx: Unexpected character*"])
+        result.stdout.no_fnmatch_line("*parse_markdown*")
+
     def test_shares_hoisted_imports_across_blocks(self, pytester: pytest.Pytester):
         md = "## A\n\n```python test\nimport math\n```\n\n## B\n\n```python test\nassert math.pi > 3\n```\n"
         write(pytester, md)

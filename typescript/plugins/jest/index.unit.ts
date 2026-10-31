@@ -28,4 +28,12 @@ describe("irondocs jest transformer", () => {
     const { code } = transformer.process("console.log()", "/path/foo.ts")
     expect(code).toBe("console.log()")
   })
+
+  it("parses an .mdx file as MDX and an .svx file as markdown", () => {
+    const mdx = "# Tabs\n\n<Tab>\n  ```ts test\n  expect(1).toBe(1)\n  ```\n</Tab>\n"
+    expect(transformer.process(mdx, "/path/tabs.mdx").code).toContain(`it("Tabs"`)
+    const svx =
+      "<script>\n  let x = 1\n</script>\n\n# Note\n\n```ts test\nexpect(1).toBe(1)\n```\n"
+    expect(transformer.process(svx, "/path/note.svx").code).toContain(`it("Note"`)
+  })
 })
