@@ -36,11 +36,13 @@ export default function irondocs(): VitePlugin {
       isTestFile = createTestFilter(config, config.root)
     },
     // Vite keys the module by its virtual id, not the doc's path, and vitest turns HMR
-    // off, so without this a watch rerun keeps the doc's stale test module
+    // off, so without this a watch rerun keeps the doc's stale test module. The watcher
+    // reports Windows paths with `\`, the ids `resolveId` builds use `/`
     configureServer(server) {
       server.watcher.on("change", file => {
+        const id = PREFIX + file.replaceAll("\\", "/") + SUFFIX
         for (const environment of Object.values(server.environments)) {
-          const cached = environment.moduleGraph.getModuleById(PREFIX + file + SUFFIX)
+          const cached = environment.moduleGraph.getModuleById(id)
           if (cached) environment.moduleGraph.invalidateModule(cached)
         }
       })

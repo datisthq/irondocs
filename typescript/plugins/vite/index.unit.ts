@@ -94,6 +94,29 @@ describe("irondocs vite plugin", () => {
     expect(invalidated).toEqual([cached])
   })
 
+  it("matches a Windows watcher path to the id resolveId built", () => {
+    const listeners: ((file: string) => void)[] = []
+    const invalidated: unknown[] = []
+    const cached = { id: "\0irondocs:C:/root/a.md.js" }
+    const server = {
+      watcher: {
+        on: (_event: string, listener: (file: string) => void) =>
+          listeners.push(listener),
+      },
+      environments: {
+        ssr: {
+          moduleGraph: {
+            getModuleById: (id: string) => (id === cached.id ? cached : undefined),
+            invalidateModule: (node: unknown) => invalidated.push(node),
+          },
+        },
+      },
+    }
+    invokeHook(irondocs().configureServer, {}, [server])
+    for (const listener of listeners) listener("C:\\root\\a.md")
+    expect(invalidated).toEqual([cached])
+  })
+
   it("ignores ids it did not resolve", () => {
     expect(invokeHook(irondocs().load, {}, ["/root/docs/a.md"])).toBeUndefined()
   })
