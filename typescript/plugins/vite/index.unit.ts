@@ -35,7 +35,7 @@ describe("irondocs vite plugin", () => {
     const watched: string[] = []
     const code = expectLoadedCode(
       invokeHook(
-        irondocs().load,
+        configurePlugin(dir, ["*.md"]).load,
         { addWatchFile: (file: string) => watched.push(file) },
         [`\0irondocs:${path}.js`],
       ),
@@ -54,9 +54,22 @@ describe("irondocs vite plugin", () => {
       "# Tabs\n\n<Tab>\n  ```ts test\n  expect(1).toBe(1)\n  ```\n</Tab>\n",
     )
     const code = expectLoadedCode(
-      invokeHook(irondocs().load, { addWatchFile: () => {} }, [`\0irondocs:${path}.js`]),
+      invokeHook(configurePlugin(dir, ["*.mdx"]).load, { addWatchFile: () => {} }, [
+        `\0irondocs:${path}.js`,
+      ]),
     )
     expect(code).toContain(`it("Tabs"`)
+  })
+
+  it("refuses a virtual id outside test.include or the doc extensions", () => {
+    const dir = temporaryDirectory()
+    writeFileSync(join(dir, "secret.txt"), "```ts test\nsecret\n```\n")
+    writeFileSync(join(dir, "other.md"), "```ts test\nsecret\n```\n")
+    const plugin = configurePlugin(dir, ["docs/*.md", "*.txt"])
+    for (const file of ["secret.txt", "other.md"]) {
+      const id = `\0irondocs:${join(dir, file)}.js`
+      expect(invokeHook(plugin.load, { addWatchFile: () => {} }, [id])).toBeUndefined()
+    }
   })
 
   it("invalidates a doc's test module when its file changes", () => {

@@ -27,6 +27,8 @@ const SUFFIX = ".js"
 export default function irondocs(): VitePlugin {
   const project = createProject()
   let isTestFile = (_path: string) => false
+  const isTestDoc = (path: string) =>
+    EXTENSIONS.some(extension => path.endsWith(extension)) && isTestFile(path)
   return {
     name: "irondocs",
     enforce: "pre",
@@ -49,12 +51,15 @@ export default function irondocs(): VitePlugin {
         ...options,
         skipSelf: true,
       })
-      if (!resolved || !isTestFile(resolved.id)) return
+      if (!resolved || !isTestDoc(resolved.id)) return
       return PREFIX + resolved.id + SUFFIX
     },
     load(id) {
       if (!id.startsWith(PREFIX) || !id.endsWith(SUFFIX)) return
       const path = id.slice(PREFIX.length, -SUFFIX.length)
+      // The dev server serves any `\0` id from a `/@id/__x00__` URL, so the gate is
+      // repeated here or a request could read a file outside the docs
+      if (!isTestDoc(path)) return
       this.addWatchFile(path)
       return {
         code: renderDocument(readFileSync(path, "utf8"), path, project),
