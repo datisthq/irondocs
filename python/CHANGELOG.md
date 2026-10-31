@@ -1,5 +1,12 @@
 # Changelog
 
+## [0.2.0](https://github.com/datisthq/irondocs/compare/python-v0.1.0...python-v0.2.0) (2026-10-31)
+
+
+### Features
+
+* parse markdown with textlane in both packages ([bca575a](https://github.com/datisthq/irondocs/commit/bca575aef0d935aac405e0ac29865578b2aca09b))
+
 ## 0.1.0 (2026-10-27)
 
 
