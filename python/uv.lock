@@ -6,6 +6,9 @@ requires-python = ">=3.12"
 exclude-newer = "0001-01-01T00:00:00Z" # This has no effect and is included for backwards compatibility when using relative exclude-newer values.
 exclude-newer-span = "P7D"
 
+[options.exclude-newer-package]
+textlane = false
+
 [[package]]
 name = "colorama"
 version = "0.4.6"
@@ -128,8 +131,8 @@ name = "irondocs"
 version = "0.1.0"
 source = { editable = "." }
 dependencies = [
-    { name = "markdown-it-py" },
     { name = "pytest" },
+    { name = "textlane" },
 ]
 
 [package.dev-dependencies]
@@ -141,8 +144,8 @@ dev = [
 
 [package.metadata]
 requires-dist = [
-    { name = "markdown-it-py", specifier = ">=3.0" },
     { name = "pytest", specifier = ">=8.0" },
+    { name = "textlane", specifier = ">=0.5.0" },
 ]
 
 [package.metadata.requires-dev]
@@ -150,27 +153,6 @@ dev = [
     { name = "pytest-cov", specifier = ">=7.0.0" },
     { name = "ruff", specifier = "==0.15.0" },
     { name = "ty", specifier = "==0.0.87" },
-]
-
-[[package]]
-name = "markdown-it-py"
-version = "4.2.0"
-source = { registry = "https://pypi.org/simple" }
-dependencies = [
-    { name = "mdurl" },
-]
-sdist = { url = "https://files.pythonhosted.org/packages/06/ff/7841249c247aa650a76b9ee4bbaeae59370dc8bfd2f6c01f3630c35eb134/markdown_it_py-4.2.0.tar.gz", hash = "sha256:04a21681d6fbb623de53f6f364d352309d4094dd4194040a10fd51833e418d49", size = 82454, upload-time = "2026-05-07T12:08:28.36Z" }
-wheels = [
-    { url = "https://files.pythonhosted.org/packages/b3/81/4da04ced5a082363ecfa159c010d200ecbd959ae410c10c0264a38cac0f5/markdown_it_py-4.2.0-py3-none-any.whl", hash = "sha256:9f7ebbcd14fe59494226453aed97c1070d83f8d24b6fc3a3bcf9a38092641c4a", size = 91687, upload-time = "2026-05-07T12:08:27.182Z" },
-]
-
-[[package]]
-name = "mdurl"
-version = "0.1.2"
-source = { registry = "https://pypi.org/simple" }
-sdist = { url = "https://files.pythonhosted.org/packages/d6/54/cfe61301667036ec958cb99bd3efefba235e65cdeb9c84d24a8293ba1d90/mdurl-0.1.2.tar.gz", hash = "sha256:bb413d29f5eea38f31dd4754dd7377d4465116fb207585f97bf925588687c1ba", size = 8729, upload-time = "2022-08-14T12:40:10.846Z" }
-wheels = [
-    { url = "https://files.pythonhosted.org/packages/b3/38/89ba8ad64ae25be8de66a6d463314cf1eb366222074cfda9ee839c56a4b4/mdurl-0.1.2-py3-none-any.whl", hash = "sha256:84008a41e51615a49fc9966191ff91509e3c40b939176e643fd50a5c2196b8f8", size = 9979, upload-time = "2022-08-14T12:40:09.779Z" },
 ]
 
 [[package]]
@@ -253,6 +235,21 @@ wheels = [
     { url = "https://files.pythonhosted.org/packages/6f/b0/69adf22f4e24f3677208adb715c578266842e6e6a3cc77483f48dd999ede/ruff-0.15.0-py3-none-win32.whl", hash = "sha256:238a717ef803e501b6d51e0bdd0d2c6e8513fe9eec14002445134d3907cd46c3", size = 10465945, upload-time = "2026-02-03T17:53:12.591Z" },
     { url = "https://files.pythonhosted.org/packages/51/ad/f813b6e2c97e9b4598be25e94a9147b9af7e60523b0cb5d94d307c15229d/ruff-0.15.0-py3-none-win_amd64.whl", hash = "sha256:dd5e4d3301dc01de614da3cdffc33d4b1b96fb89e45721f1598e5532ccf78b18", size = 11564657, upload-time = "2026-02-03T17:52:51.893Z" },
     { url = "https://files.pythonhosted.org/packages/f6/b0/2d823f6e77ebe560f4e397d078487e8d52c1516b331e3521bc75db4272ca/ruff-0.15.0-py3-none-win_arm64.whl", hash = "sha256:c480d632cc0ca3f0727acac8b7d053542d9e114a462a145d0b00e7cd658c515a", size = 10865753, upload-time = "2026-02-03T17:53:03.014Z" },
+]
+
+[[package]]
+name = "textlane"
+version = "0.5.0"
+source = { registry = "https://pypi.org/simple" }
+wheels = [
+    { url = "https://files.pythonhosted.org/packages/db/21/fa336c6dce43fa75efc1483f1b91e8b2d66499d731ee52be2f5dc6d432e7/textlane-0.5.0-cp39-abi3-macosx_10_12_x86_64.whl", hash = "sha256:caaf96446834a9e64bac80ebc7b8f2bd1aae974f8d9c1d988e4552b92f9c3625", size = 5254262, upload-time = "2026-10-31T14:04:35.984Z" },
+    { url = "https://files.pythonhosted.org/packages/f0/dd/83792a1c9aaa74802926609abdf4366797bbf11a5e196c773ecd29c55a13/textlane-0.5.0-cp39-abi3-macosx_11_0_arm64.whl", hash = "sha256:bd4b958340dfc46513181354dc3273568afa0b1e16d2e472609b1763eec73540", size = 5040819, upload-time = "2026-10-31T14:04:38.081Z" },
+    { url = "https://files.pythonhosted.org/packages/aa/3d/e09a36444a793924b0efdd5af2b68633ce22a14c9ef14bf4f8a6d4fc211f/textlane-0.5.0-cp39-abi3-manylinux2014_aarch64.manylinux_2_17_aarch64.whl", hash = "sha256:d2f6a6a2d3ab6c6ab4a4adf9ca224801ba3aa211e0c24562fdcd6e8598990234", size = 5333421, upload-time = "2026-10-31T14:04:40.007Z" },
+    { url = "https://files.pythonhosted.org/packages/c7/f1/07de314216ba7030d396a80c85fdc8837a7f5c6080379d66a737a43d4b76/textlane-0.5.0-cp39-abi3-manylinux2014_x86_64.manylinux_2_17_x86_64.whl", hash = "sha256:ace76e2194e2b3a488228e0e8fcc04ac77e16e4217d95436880c9a376e5a881b", size = 5506270, upload-time = "2026-10-31T14:04:42.359Z" },
+    { url = "https://files.pythonhosted.org/packages/da/a2/a6350ee32550c649fa048fcbbb1599997758a33709061c4b78134d2aef90/textlane-0.5.0-cp39-abi3-musllinux_1_2_aarch64.whl", hash = "sha256:8813ce92e6a8918251e8455fdefc168e9ab5775ab6a0ef0d7c4eefad588a4bde", size = 5500467, upload-time = "2026-10-31T14:04:44.584Z" },
+    { url = "https://files.pythonhosted.org/packages/39/79/74d372b61caa91b9b7566d683613b9d16dbb481c662ffe37fe6ec9687359/textlane-0.5.0-cp39-abi3-musllinux_1_2_x86_64.whl", hash = "sha256:20a13ec61e6ac78c491f1f313e80ef9f7b72939ffb5adae900671ffe11e4d311", size = 5792399, upload-time = "2026-10-31T14:04:46.291Z" },
+    { url = "https://files.pythonhosted.org/packages/d3/5f/032ac4ef77f0ef8253f75d9d0201479a0368dfc740b55f09f5918a8b97df/textlane-0.5.0-cp39-abi3-win_amd64.whl", hash = "sha256:f289e2b8c1f38dbe2b5c884db242ff90544167385bcae125560bd16da6c128ef", size = 5396187, upload-time = "2026-10-31T14:04:47.968Z" },
+    { url = "https://files.pythonhosted.org/packages/38/8a/fe649572f21922a2dbf34b759353d41b97b2e47bc81935d2a25d3925e616/textlane-0.5.0-cp39-abi3-win_arm64.whl", hash = "sha256:05b841dd4326e7bed4ac48e3436a975d875fc4e5a82e9865fcf7eb132da56944", size = 5161340, upload-time = "2026-10-31T14:04:49.751Z" },
 ]
 
 [[package]]

@@ -83,18 +83,12 @@ importers:
       cn:
         specifier: 0.2.4
         version: 0.2.4
-      mdast-util-to-string:
-        specifier: ^4.0.0
-        version: 4.0.0
-      remark-parse:
-        specifier: ^11.0.0
-        version: 11.0.0(supports-color@10.2.2)
+      textlane:
+        specifier: ^0.5.0
+        version: 0.5.0
       ts-morph:
         specifier: ^27.0.2
         version: 27.0.2
-      unified:
-        specifier: ^11.0.5
-        version: 11.0.5
     devDependencies:
       '@types/mdast':
         specifier: ^4.0.4
@@ -2458,6 +2452,50 @@ packages:
     peerDependencies:
       '@testing-library/dom': '>=7.21.4'
 
+  '@textlane/darwin-arm64@0.5.0':
+    resolution: {integrity: sha512-6hPDmq51BseaGLzAVUYulQXh6P8luWjiRjVIc8k5hcCgm7hMF3kboU4wKKJ3zMro+DqpQP7upUi34ZDw51NUfg==}
+    cpu: [arm64]
+    os: [darwin]
+
+  '@textlane/darwin-x64@0.5.0':
+    resolution: {integrity: sha512-t/X0U2SLbz2A6y/fdPpFkTRuhk66WEGFf4VaDEWZ8TGZtjOkmaVrb3GWcTw+x9OR3uQg6mhYYLVhUEo4QWNGbg==}
+    cpu: [x64]
+    os: [darwin]
+
+  '@textlane/linux-arm64-musl@0.5.0':
+    resolution: {integrity: sha512-KddCoHzutTkbAnJtSHGGqAIrn2C66Q76uICwNLUKUffBzvTCs5Xt7vcWTTC98GRqGbAzFbM3iuMUidqCPhXmUw==}
+    cpu: [arm64]
+    os: [linux]
+    libc: [musl]
+
+  '@textlane/linux-arm64@0.5.0':
+    resolution: {integrity: sha512-k2BTDCqVcxvgLuDe0u3rRxX5A6ScSNm4bqBWFCHbruh8uQ2g4Y0T2YlZUtHn4RKVsLdv3XeS6DhGJWdOB4W6Iw==}
+    cpu: [arm64]
+    os: [linux]
+    libc: [glibc]
+
+  '@textlane/linux-x64-musl@0.5.0':
+    resolution: {integrity: sha512-ACQY6yWs8i070yyE3MWpnbbii+E5+2F4VkbeatPkzeAAcxYeWLPIXqf6P88vKmu8/QdOCjysetFWZ/QYFiFlFg==}
+    cpu: [x64]
+    os: [linux]
+    libc: [musl]
+
+  '@textlane/linux-x64@0.5.0':
+    resolution: {integrity: sha512-Ds583bgAxbdyOK7wU9gQ56sJgU6pB2yDWQE+w0rfmqXLV8RPHXjiO2ftjz3qwBAKKRLGl9o1B5ovebu1+7YgCg==}
+    cpu: [x64]
+    os: [linux]
+    libc: [glibc]
+
+  '@textlane/win32-arm64@0.5.0':
+    resolution: {integrity: sha512-GGpigGSBk1lgljZhvXbrKY73NLA+qFIk4kqIF1BaKXAUVyeGKNyy5BpI+8y7NBq6viH0/oKECzU7lra1BayEcw==}
+    cpu: [arm64]
+    os: [win32]
+
+  '@textlane/win32-x64@0.5.0':
+    resolution: {integrity: sha512-A0F3CYgkDuAJqcc3CR1xXEwLMIK5EXyr5BbMUXo2dfoxhPvdsRBd1/cOkWJIFuBWQSez8aZSNYfuFfu0x5fVMw==}
+    cpu: [x64]
+    os: [win32]
+
   '@ts-morph/common@0.27.0':
     resolution: {integrity: sha512-Wf29UqxWDpc+i61k3oIOzcUfQt79PIT9y/MWfAGlrkjg6lBC1hwDECLXPVJAhWjiGbfBCxZd65F/LIZF3+jeJQ==}
 
@@ -2595,6 +2633,9 @@ packages:
 
   '@types/ms@2.1.0':
     resolution: {integrity: sha512-GsCCIZDE/p3i96vtEqx+7dBUGXrc7zeSK3wwPHIaRThS+9OhWIXRqzs4d6k1SVU8g91DrNRWxWUGhp5KXQb2VA==}
+
+  '@types/nlcst@2.0.3':
+    resolution: {integrity: sha512-vSYNSDe6Ix3q+6Z7ri9lyWqgGhJTmzRjZRqyq15N0Z/1/UnVsno9G/N40NBijoYx2seFDIl0+B2mgAb9mezUCA==}
 
   '@types/node@24.2.0':
     resolution: {integrity: sha512-3xyG3pMCq3oYCNg7/ZP+E1ooTaGB4cG8JWRsqqOYQdbWNY4zbaV0Ennrd7stjiJEFZCaybcIgpTjJWHRfBSIDw==}
@@ -5578,6 +5619,10 @@ packages:
     resolution: {integrity: sha512-d79HhZya5Djd7am0q+W4RTsSU+D/aJzM+4Y4AGJGuGlgM2L6sx5ZvOYTmZjqPhrDrV6xJTtRSm1JCLj6V6LHLQ==}
     engines: {node: '>=14.16'}
 
+  textlane@0.5.0:
+    resolution: {integrity: sha512-YvGIg9FwORZmLJx0NisIiD6T/u5o76bm0FuDbw/2jHCbay/GhTZNPC2KKoraF/KQHOpE5YqqrBDh0A/Co2iqCg==}
+    engines: {node: '>=20'}
+
   tiny-invariant@1.3.3:
     resolution: {integrity: sha512-+FbBPE1o9QAYvviau/qC5SE3caw21q3xkvWKBtja5vgqOWIHHJ3ioaq1VPfn/Szqctz2bU/oYeKd9/z5BL+PVg==}
 
@@ -8167,6 +8212,30 @@ snapshots:
     dependencies:
       '@testing-library/dom': 10.4.1
 
+  '@textlane/darwin-arm64@0.5.0':
+    optional: true
+
+  '@textlane/darwin-x64@0.5.0':
+    optional: true
+
+  '@textlane/linux-arm64-musl@0.5.0':
+    optional: true
+
+  '@textlane/linux-arm64@0.5.0':
+    optional: true
+
+  '@textlane/linux-x64-musl@0.5.0':
+    optional: true
+
+  '@textlane/linux-x64@0.5.0':
+    optional: true
+
+  '@textlane/win32-arm64@0.5.0':
+    optional: true
+
+  '@textlane/win32-x64@0.5.0':
+    optional: true
+
   '@ts-morph/common@0.27.0':
     dependencies:
       fast-glob: 3.3.3
@@ -8335,6 +8404,10 @@ snapshots:
   '@types/mdx@2.0.13': {}
 
   '@types/ms@2.1.0': {}
+
+  '@types/nlcst@2.0.3':
+    dependencies:
+      '@types/unist': 3.0.3
 
   '@types/node@24.2.0':
     dependencies:
@@ -11954,6 +12027,22 @@ snapshots:
       temp-dir: 3.0.0
       type-fest: 2.19.0
       unique-string: 3.0.0
+
+  textlane@0.5.0:
+    dependencies:
+      '@types/hast': 3.0.5
+      '@types/mdast': 4.0.4
+      '@types/nlcst': 2.0.3
+      '@types/unist': 3.0.3
+    optionalDependencies:
+      '@textlane/darwin-arm64': 0.5.0
+      '@textlane/darwin-x64': 0.5.0
+      '@textlane/linux-arm64': 0.5.0
+      '@textlane/linux-arm64-musl': 0.5.0
+      '@textlane/linux-x64': 0.5.0
+      '@textlane/linux-x64-musl': 0.5.0
+      '@textlane/win32-arm64': 0.5.0
+      '@textlane/win32-x64': 0.5.0
 
   tiny-invariant@1.3.3: {}
 

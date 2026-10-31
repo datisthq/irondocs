@@ -23,6 +23,8 @@ minimumReleaseAgeExclude:
   - "@fairspec/*"
   - fireargs
   - livemark
+  - textlane
+  - "@textlane/*"
   # Transitive, with no exact pin to lower. Exempted at this one version and pruned
   # automatically once it ages past the window (minimumReleaseAgeExcludePrune).
   - "postcss@8.5.28"

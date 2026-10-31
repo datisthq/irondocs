@@ -18,7 +18,7 @@ classifiers = [
   "Topic :: Software Development :: Testing",
   "Typing :: Typed",
 ]
-dependencies = ["markdown-it-py>=3.0", "pytest>=8.0"]
+dependencies = ["pytest>=8.0", "textlane>=0.5.0"]
 
 [[project.authors]]
 name = "Evgeny Karev"
@@ -49,6 +49,8 @@ exclude = ["**/*_unit.py"]
 # Same seven-day quarantine as minimumReleaseAge in pnpm-workspace.yaml; pin a hotfix
 # through exclude-newer-package instead of shortening this for the whole tree
 exclude-newer = "7 days"
+# Our own package, exempt as pnpm-workspace.yaml exempts it: we are its maintainer
+exclude-newer-package = { textlane = false }
 
 [tool.ruff]
 line-length = 90

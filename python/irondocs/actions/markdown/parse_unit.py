@@ -1,3 +1,5 @@
+import pytest
+
 from ...models.block import Block
 from .parse import parse_markdown
 
@@ -120,6 +122,24 @@ class TestParseMarkdown:
     def test_never_reads_yaml_front_matter_as_a_heading(self):
         md = "---\ntitle: Page\norder: 2\n---\n\n```python test\na\n```\n"
         assert parse_markdown(md) == [Block(heading="", code="a", line=7)]
+
+    def test_never_reads_front_matter_closed_by_dots_as_a_heading(self):
+        md = "---\ntitle: Page\n...\n\n```python test\na\n```\n"
+        assert parse_markdown(md) == [Block(heading="", code="a", line=6)]
+
+    @pytest.mark.parametrize(
+        ("heading", "text"),
+        [
+            ("## Tom &amp; Jerry", "Tom & Jerry"),
+            ("## A <b>bold</b> move", "A <b>bold</b> move"),
+            ("## See [docs](x) and ![alt](i.png)", "See docs and alt"),
+            ("Setext\n======", "Setext"),
+            ("## Trailing #s ##", "Trailing #s"),
+        ],
+    )
+    def test_reads_heading_text_as_remark_does(self, heading: str, text: str):
+        md = f"{heading}\n\n```python test\nx\n```\n"
+        assert parse_markdown(md)[0].heading == text
 
     def test_keeps_the_first_heading_of_a_file_that_starts_with_a_bom(self):
         md = "\ufeff# Title\n\n```python test\na\n```\n"

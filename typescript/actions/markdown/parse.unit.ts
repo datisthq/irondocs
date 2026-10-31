@@ -125,6 +125,29 @@ describe("parseMarkdown", () => {
     expect(parseMarkdown(md)).toEqual([{ heading: "", code: "a" }])
   })
 
+  it("never reads front matter closed by `...` as a heading", () => {
+    const md = "---\ntitle: Page\n...\n\n```ts test\na\n```\n"
+    expect(parseMarkdown(md)).toEqual([{ heading: "", code: "a" }])
+  })
+
+  it("ignores blocks nested in lists", () => {
+    const md = "- item\n\n  ```ts test\n  x\n  ```\n"
+    expect(parseMarkdown(md)).toEqual([])
+  })
+
+  it.each([
+    ["## The `sum` **function**", "The sum function"],
+    ["## Tom &amp; Jerry", "Tom & Jerry"],
+    ["## A <b>bold</b> move", "A <b>bold</b> move"],
+    ["## See [docs](x) and ![alt](i.png)", "See docs and alt"],
+    ["Setext\n======", "Setext"],
+    ["## Trailing #s ##", "Trailing #s"],
+  ])("reads the heading %j as %j", (heading, text) => {
+    expect(parseMarkdown(`${heading}\n\n\`\`\`ts test\nx\n\`\`\`\n`)[0]?.heading).toBe(
+      text,
+    )
+  })
+
   it("keeps the first heading of a file that starts with a BOM", () => {
     const md = "\uFEFF# Title\n\n```ts test\na\n```\n"
     expect(parseMarkdown(md)).toEqual([{ heading: "Title", code: "a" }])
