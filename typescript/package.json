@@ -1,6 +1,6 @@
 {
   "name": "irondocs",
-  "version": "0.3.2",
+  "version": "0.4.0",
   "description": "Test codeblocks in Vitest/Jest",
   "keywords": [
     "irondocs",

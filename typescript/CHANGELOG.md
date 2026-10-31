@@ -1,5 +1,12 @@
 # Changelog
 
+## [0.4.0](https://github.com/datisthq/irondocs/compare/v0.3.2...v0.4.0) (2026-10-31)
+
+
+### Features
+
+* parse markdown with textlane in both packages ([bca575a](https://github.com/datisthq/irondocs/commit/bca575aef0d935aac405e0ac29865578b2aca09b))
+
 ## [0.3.2](https://github.com/datisthq/irondocs/compare/v0.3.1...v0.3.2) (2026-10-27)
 
 
