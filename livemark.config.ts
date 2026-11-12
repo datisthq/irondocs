@@ -2,6 +2,15 @@ import { defineConfig } from "livemark"
 
 export default defineConfig({
   site: "https://irondocs.dev",
+  head: {
+    scripts: [
+      {
+        src: "https://counter.datist.io/api/script.js",
+        "data-site-id": "8",
+        defer: "true",
+      },
+    ],
+  },
   title: "Irondocs",
   description: "Test codeblocks in Markdown",
   logo: "/logo.svg",
